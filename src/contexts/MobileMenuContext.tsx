@@ -3,7 +3,7 @@ import React, { createContext, useReducer } from 'react';
 /* --------------------------------------------------------------- */
 
 interface IInitialState {
-  isLoading: boolean
+  opened: boolean
 }
 
 interface IAction {
@@ -22,14 +22,14 @@ interface IHandlers {
 /* --------------------------------------------------------------- */
 
 const initialState: IInitialState = {
-  isLoading: false,
+  opened: false,
 };
 
 const handlers: IHandlers = {
-  SET_IS_LOADING: (state: object, action: IAction) => {
+  SET_OPENED: (state: object, action: IAction) => {
     return {
       ...state,
-      isLoading: action.payload
+      opened: action.payload
     };
   }
 };
@@ -38,41 +38,41 @@ const reducer = (state: object, action: IAction) =>
   handlers[action.type] ? handlers[action.type](state, action) : state;
 
 //  Context
-const LoadingContext = createContext({
+const MobileMenuContext = createContext({
   ...initialState,
-  openLoading: () => Promise.resolve(),
-  closeLoading: () => Promise.resolve()
+  openMenu: () => Promise.resolve(),
+  closeMenu: () => Promise.resolve()
 });
 
 //  Provider
-function LoadingProvider({ children }: IProps) {
+function MobileMenuProvider({ children }: IProps) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const openLoading = () => {
+  const openMenu = () => {
     dispatch({
-      type: 'SET_IS_LOADING',
+      type: 'SET_OPENED',
       payload: true
     });
   };
 
-  const closeLoading = () => {
+  const closeMenu = () => {
     dispatch({
-      type: 'SET_IS_LOADING',
+      type: 'SET_OPENED',
       payload: false
     });
   };
 
   return (
-    <LoadingContext.Provider
+    <MobileMenuContext.Provider
       value={{
         ...state,
-        openLoading,
-        closeLoading
+        openMenu,
+        closeMenu
       }}
     >
       {children}
-    </LoadingContext.Provider>
+    </MobileMenuContext.Provider>
   );
 }
 
-export { LoadingContext, LoadingProvider };
+export { MobileMenuContext, MobileMenuProvider };
