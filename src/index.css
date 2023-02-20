@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.hero_bg {
+  background-image: url(/assets/images/hero.jpg);
+  background-position: center left;
+  background-repeat: no-repeat;
+  background-size: auto;
+}
+
+.hero_overlay {
+  background-color: transparent;
+  background-image: linear-gradient(110deg, #ffffff 53%, #00000000 53%);
+  opacity: 1;
+  transition: background 0.3s, border-radius 0.3s, opacity 0.3s;
+}

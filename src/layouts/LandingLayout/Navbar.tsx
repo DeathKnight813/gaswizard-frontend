@@ -6,27 +6,34 @@ import useMobileMenu from '../../hooks/useMobileMenu'
 export default function Navbar() {
   const { openMenu } = useMobileMenu()
   return (
-    <div className="bg-white px-6 py-4 sticky top-0 z-40 flex justify-between items-center md:items-end">
-      <img src="/assets/images/logo.svg" alt="logo" className="w-16" />
-      {/* For Desktop */}
-      <div className="hidden md:flex gap-1">
-        <Button variant="text" className="text-black hover:text-[#00AA01] font-normal">Roadmap</Button>
-        <Button variant="text" className="text-black hover:text-[#00AA01] font-normal">Whitepaper</Button>
-        <Button variant="text" className="text-black hover:text-[#00AA01] font-normal">FAQ</Button>
-        <Button variant="text" className="text-black hover:text-[#00AA01] font-normal">Our Team</Button>
-        <Button variant="text" className="text-black hover:text-[#00AA01] font-normal">Partners</Button>
-        <Button variant="text" className="text-black hover:text-[#00AA01] font-normal">Win $50K</Button>
-        <Button variant="text" className="text-black hover:text-[#00AA01] font-normal">Linktree</Button>
-      </div>
+    <div className="bg-white px-6 py-4 sticky top-0 z-40">
+      <div className="container mx-auto">
+        <div className="flex justify-between items-center md:items-end">
+          <img src="/assets/images/logo.png" alt="Logo" className="w-56" />
 
-      {/* For Mobile */}
-      <IconButton
-        variant="text"
-        className="text-black text-3xl flex md:hidden"
-        onClick={openMenu}
-      >
-        <Icon icon="material-symbols:menu-rounded" />
-      </IconButton>
+          {/* For Desktop */}
+          <div className="hidden md:flex gap-1">
+            <Button variant="text" className="text-[#1DB0C0] hover:text-[#9EC51E] font-bold">Gas Wizard Merch</Button>
+            <Button variant="text" className="text-[#1DB0C0] hover:text-[#9EC51E] font-bold">About Gas Wizard</Button>
+            <Button variant="text" className="text-[#1DB0C0] hover:text-[#9EC51E] font-bold">Contact Us</Button>
+            <Button variant="text" className="text-[#1DB0C0] hover:text-[#9EC51E] font-bold">In the News</Button>
+            <Button variant="text" className="text-[#1DB0C0] hover:text-[#9EC51E] font-bold">Gas Paper</Button>
+          </div>
+
+          {/* For Mobile */}
+          <IconButton
+            variant="text"
+            className="text-black text-3xl flex md:hidden"
+            onClick={openMenu}
+          >
+            <Icon icon="material-symbols:menu-rounded" />
+          </IconButton>
+
+          <Button variant="text" className="bg-[#9EC51E] rounded-none text-white text-lg capitalize">
+            How To Buy
+          </Button>
+        </div>
+      </div>
     </div>
   )
 }
