@@ -1,9 +1,11 @@
 import React from "react"
 import { Button } from "@material-tailwind/react"
 
+/* ----------------------------------------------------------- */
+
 export default function HeroSection() {
   return (
-    <div className="hero_bg w-screen h-[720px] relative">
+    <div className="hero_bg max-w-screen h-[720px] relative">
       <div className="hero_overlay absolute top-0 left-0 w-full h-full" />
       <div className="w-1/2 h-full pl-80 pr-16 flex justify-center relative">
         <div className="h-full flex flex-col justify-center gap-8">

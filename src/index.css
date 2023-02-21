@@ -7,6 +7,7 @@
   background-position: center left;
   background-repeat: no-repeat;
   background-size: auto;
+  overflow: hidden;
 }
 
 .hero_overlay {
