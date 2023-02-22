@@ -13,11 +13,11 @@ export default function Navbar() {
 
           {/* For Desktop */}
           <div className="hidden md:flex gap-1">
-            <Button variant="text" className="text-[#1DB0C0] hover:text-[#9EC51E] font-bold">Gas Wizard Merch</Button>
-            <Button variant="text" className="text-[#1DB0C0] hover:text-[#9EC51E] font-bold">About Gas Wizard</Button>
-            <Button variant="text" className="text-[#1DB0C0] hover:text-[#9EC51E] font-bold">Contact Us</Button>
-            <Button variant="text" className="text-[#1DB0C0] hover:text-[#9EC51E] font-bold">In the News</Button>
-            <Button variant="text" className="text-[#1DB0C0] hover:text-[#9EC51E] font-bold">Gas Paper</Button>
+            <Button variant="text" className="text-primary hover:text-secondary font-bold">Gas Wizard Merch</Button>
+            <Button variant="text" className="text-primary hover:text-secondary font-bold">About Gas Wizard</Button>
+            <Button variant="text" className="text-primary hover:text-secondary font-bold">Contact Us</Button>
+            <Button variant="text" className="text-primary hover:text-secondary font-bold">In the News</Button>
+            <Button variant="text" className="text-primary hover:text-secondary font-bold">Gas Paper</Button>
           </div>
 
           {/* For Mobile */}
@@ -29,7 +29,7 @@ export default function Navbar() {
             <Icon icon="material-symbols:menu-rounded" />
           </IconButton>
 
-          <Button variant="text" className="bg-[#9EC51E] rounded-none text-white text-lg capitalize">
+          <Button variant="text" className="bg-secondary rounded-none text-white text-lg capitalize">
             How To Buy
           </Button>
         </div>

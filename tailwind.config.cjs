@@ -7,6 +7,12 @@ module.exports = withMT({
   ],
   theme: {
     extend: {},
+    colors: {
+      primary: '#1DB0c0',
+      secondary: '#9EC51E',
+      darkPrimary: '#232323',
+      darkSecondary: '#555555'
+    }
   },
   plugins: [],
-})
+});

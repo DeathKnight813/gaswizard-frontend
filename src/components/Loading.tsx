@@ -1,6 +1,8 @@
 import React from 'react';
 import { Typography } from "@material-tailwind/react";
 
+/* ----------------------------------------------------------- */
+
 export default function Loading() {
   return (
     <div className="min-w-screen min-h-screen bg-white flex flex-col items-center justify-center">
