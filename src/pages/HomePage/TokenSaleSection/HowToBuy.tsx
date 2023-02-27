@@ -1,3 +1,4 @@
+import React from "react";
 import SectionTitleSash1 from "../../../components/SectionTitleSash1";
 
 export default function HowToBuy() {
@@ -28,7 +29,7 @@ export default function HowToBuy() {
 
         <div>
           <a href="https://transak.com">
-            <img src="/assets/images/transak-logo.png" alt="transak-logo" className="" />
+            <img src="/assets/images/transak-logo.png" alt="transak-logo" />
           </a>
         </div>
 
