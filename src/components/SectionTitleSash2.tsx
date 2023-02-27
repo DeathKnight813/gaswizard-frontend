@@ -10,12 +10,12 @@ interface IProps {
 
 /* ----------------------------------------------------------- */
 
-export default function SectionTitleSash2({ leftColor = '#9EC51E', centerColor = '#232323', rightColor = '#9EC51E' }: IProps) {
+export default function SectionTitleSash2({ leftColor = 'secondary', centerColor = 'darkPrimary', rightColor = 'secondary' }: IProps) {
   return (
     <div className="h-1 w-24 flex">
-      <div className={`w-1/3 h-full bg-[${leftColor}]`}></div>
-      <div className={`flex-1 h-full bg-[${centerColor}]`}></div>
-      <div className={`w-1/3 h-full bg-[${rightColor}]`}></div>
+      <div className={`w-1/3 h-full bg-${leftColor}`}></div>
+      <div className={`flex-1 h-full bg-${centerColor}`}></div>
+      <div className={`w-1/3 h-full bg-${rightColor}`}></div>
     </div>
   )
 }

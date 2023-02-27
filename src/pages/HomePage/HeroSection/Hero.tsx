@@ -35,7 +35,7 @@ export default function Hero() {
           </div>
 
           <div className="flex jusitfy-start">
-            <Button variant="text" className="bg-secondary rounded-none text-white text-lg capitalize">
+            <Button variant="text" className="bg-secondary hover:bg-secondary rounded-none text-white text-lg capitalize">
               How To Buy
             </Button>
           </div>

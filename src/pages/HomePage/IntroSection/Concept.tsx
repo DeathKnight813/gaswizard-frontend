@@ -17,7 +17,7 @@ export default function Concept() {
           What is GAS WIZARD?
         </h1>
 
-        <SectionTitleSash1 leftColor={COLOR_DARK_PRIMARY} rightColor={COLOR_PRIMARY} />
+        <SectionTitleSash1 leftColor='darkPrimary' rightColor='primary' />
 
         <div className="flex flex-col gap-8 text-darkSecondary tracking-wider">
           <p>

@@ -29,7 +29,7 @@ export default function Navbar() {
             <Icon icon="material-symbols:menu-rounded" />
           </IconButton>
 
-          <Button variant="text" className="bg-secondary rounded-none text-white text-lg capitalize">
+          <Button variant="text" className="bg-secondary hover:bg-secondary rounded-none text-white text-lg capitalize">
             How To Buy
           </Button>
         </div>
