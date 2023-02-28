@@ -1,4 +1,4 @@
-
+import React from "react";
 
 interface IData {
   percentage: string;
@@ -30,10 +30,10 @@ const DATA: Array<IData> = [
 
 export default function Diagram() {
   return (
-    <div className="container mx-auto">
-      <div className="grid grid-cols-2 items-center">
+    <div className="container max-w-5xl mx-auto">
+      <div className="grid grid-cols-2 items-center gap-12">
         <div className="col-span-1">
-          <div className="w-4/5 flex flex-col gap-4">
+          <div className="flex flex-col gap-4">
             {DATA.map(dataItem => (
               <div key={dataItem.title} className={`flex flex-col gap-4 p-8 ${dataItem.bgColorClassName}`}>
                 <p className="text-8xl font-black text-white text-center">

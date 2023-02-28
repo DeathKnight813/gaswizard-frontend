@@ -1,0 +1,35 @@
+import React from "react";
+import SectionTitleSash1 from "../../../components/SectionTitleSash1";
+
+const STATIONS_1: Array<string> = ['tesla.png', 'chargep.png', 'chevron-logo.png', 'shell-logo.png']
+const STATIONS_2: Array<string> = ['711logo.png', 'speedwaylogo.png', 'marathonlogo.png', 'mobil-logo.png', 'bp-logo.png']
+
+export default function Stations() {
+  return (
+    <div className="container max-w-5xl mx-auto flex flex-col gap-16 items-center">
+      <div className="flex flex-col items-center gap-8">
+        <h2 className="text-4xl font-black text-center text-white uppercase leading-snug">
+          GAS STATIONS & EV CHARGING STATIONS
+        </h2>
+        <SectionTitleSash1 />
+      </div>
+
+      <div className="w-full flex flex-col items-center gap-8">
+        <div className="w-full flex items-center justify-between px-8">
+          {STATIONS_1.map(item => (
+            <div key={item}>
+              <img src={`/assets/images/${item}`} alt="" className="w-40" />
+            </div>
+          ))}
+        </div>
+        <div className="w-full flex items-center justify-between">
+          {STATIONS_2.map(item => (
+            <div key={item}>
+              <img src={`/assets/images/${item}`} alt="" className="w-32" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
