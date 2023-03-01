@@ -21,7 +21,7 @@ export default function LandingLayout() {
           <div className="flex-1">
             <Outlet />
           </div>
-          <Footer />
+          <Footer className="mt-16" />
         </div>
         {opened && <MobileMenu />}
       </>
