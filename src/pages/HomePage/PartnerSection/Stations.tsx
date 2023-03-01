@@ -7,7 +7,7 @@ const STATIONS_2: Array<string> = ['711logo.png', 'speedwaylogo.png', 'marathonl
 export default function Stations() {
   return (
     <div className="container max-w-5xl mx-auto flex flex-col gap-16 items-center">
-      <div className="flex flex-col items-center gap-8">
+      <div className="flex flex-col items-center gap-6">
         <h2 className="text-4xl font-black text-center text-white uppercase leading-snug">
           GAS STATIONS & EV CHARGING STATIONS
         </h2>

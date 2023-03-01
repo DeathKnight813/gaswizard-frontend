@@ -1,6 +1,7 @@
 import React from 'react'
 import HeroSection from './HeroSection'
 import IntroSection from './IntroSection'
+import NewsSection from './NewsSection'
 import PartnerSection from './PartnerSection'
 import RoadmapSection from './RoadmapSection'
 import TokenomicsSection from './TokenomicsSection'
@@ -17,6 +18,7 @@ export default function HomePage() {
       <TokenomicsSection />
       <PartnerSection />
       <RoadmapSection />
+      <NewsSection />
     </div>
   )
 }

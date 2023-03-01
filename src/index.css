@@ -18,5 +18,40 @@
 }
 
 .vertical-timeline.vertical-timeline-custom-line::before {
-  background: #9EC51E;
+  background: #9ec51e;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.swiper-pagination-bullet {
+  background: #232323;
+  opacity: 1
+}
+
+.swiper-pagination-bullet-active {
+  background: #9ec51e;
+}
+
+.swiper-pagination {
+  bottom: -0.4rem !important;
 }
