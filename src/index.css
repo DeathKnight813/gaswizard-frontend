@@ -16,3 +16,7 @@
   opacity: 1;
   transition: background 0.3s, border-radius 0.3s, opacity 0.3s;
 }
+
+.vertical-timeline.vertical-timeline-custom-line::before {
+  background: #9EC51E;
+}
