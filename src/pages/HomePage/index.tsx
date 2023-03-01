@@ -1,4 +1,5 @@
 import React from 'react'
+import FaqSection from './FaqSection'
 import HeroSection from './HeroSection'
 import IntroSection from './IntroSection'
 import NewsSection from './NewsSection'
@@ -19,6 +20,7 @@ export default function HomePage() {
       <PartnerSection />
       <RoadmapSection />
       <NewsSection />
+      <FaqSection />
     </div>
   )
 }
