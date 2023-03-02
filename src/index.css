@@ -45,7 +45,7 @@
 
 .swiper-pagination-bullet {
   background: #232323;
-  opacity: 1
+  opacity: 1;
 }
 
 .swiper-pagination-bullet-active {
@@ -54,4 +54,11 @@
 
 .swiper-pagination {
   bottom: -0.4rem !important;
+}
+
+.hero_mobile_bg {
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)),
+    url(/assets/images/hero.jpg) no-repeat;
+  background-size: cover;
+  background-position: -190px 0px;
 }

@@ -18,7 +18,7 @@ export default function Bars() {
       <div className="bg-primary">
         <div className="container mx-auto py-16">
           <div className="flex flex-col items-center gap-8">
-            <h2 className="text-center uppercase text-white text-4xl font-extrabold">
+            <h2 className="text-center uppercase text-white text-3xl lg:text-4xl font-extrabold">
               What makes us different?
             </h2>
 
@@ -31,7 +31,7 @@ export default function Bars() {
                 <div>
                   <img src="/assets/images/check-white.png" alt="check-white" className="w-[90%] h-auto" />
                 </div>
-                <p className="uppercase text-white text-4xl font-extrabold text-center">
+                <p className="uppercase text-white text-lg lg:text-4xl font-extrabold text-center">
                   {differenceItem}
                 </p>
               </div>
