@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { ThemeProvider } from "@material-tailwind/react";
+import "swiper/css";
+import "swiper/css/pagination";
 import App from './App'
 import './index.css'
 

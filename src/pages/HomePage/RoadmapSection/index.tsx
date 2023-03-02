@@ -97,7 +97,7 @@ export default function RoadmapSection() {
   return (
     <div className="container max-w-6xl mx-auto">
       <div className="flex flex-col items-center gap-8">
-        <h2 className="text-4xl font-black text-center uppercase leading-snug">
+        <h2 className="text-3xl lg:text-4xl font-black text-center uppercase leading-snug">
           Roadmap
         </h2>
         <SectionTitleSash1 leftColor="darkPrimary" rightColor="primary" />

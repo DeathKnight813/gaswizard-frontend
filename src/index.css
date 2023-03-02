@@ -56,6 +56,10 @@
   bottom: -0.4rem !important;
 }
 
+.swiper-wrapper {
+  padding-bottom: 2rem;
+}
+
 .hero_mobile_bg {
   background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)),
     url(/assets/images/hero.jpg) no-repeat;
