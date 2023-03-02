@@ -1,7 +1,6 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 import Loading from '../../components/Loading'
-import MobileMenu from '../../components/MobileMenu'
 import useLoading from '../../hooks/useLoading'
 import useMobileMenu from '../../hooks/useMobileMenu'
 import Footer from './Footer'
@@ -23,7 +22,6 @@ export default function LandingLayout() {
           </div>
           <Footer className="mt-16" />
         </div>
-        {opened && <MobileMenu />}
       </>
     )
   }

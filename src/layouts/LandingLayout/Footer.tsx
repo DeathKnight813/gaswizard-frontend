@@ -12,20 +12,20 @@ export default function Footer({ className = '' }: IProps) {
       <div className="bg-darkPrimary py-12">
         <div className="container mx-auto">
           <div className="grid grid-cols-3 gap-12 items-center">
-            <div className="col-span-1 flex flex-col gap-6">
+            <div className="col-span-3 lg:col-span-1 flex flex-col items-center lg:items-left gap-6">
               <div>
                 <img src="/assets/images/main-logo.png" alt="main-logo" className="w-32" />
               </div>
 
-              <p className="text-white">
+              <p className="text-justify lg:text-left text-white px-6 lg:px-0">
                 Gas Wizard Finance is a crypto fueled GAS & EV payment and savings solution that is becoming the 1st on or off chain platform rewarding token holders with FREE gas.
               </p>
             </div>
 
-            <div className="col-span-2">
+            <div className="col-span-3 lg:col-span-2">
               <div className="grid grid-cols-2 gap-12">
-                <div className="col-span-1 flex flex-col items-center gap-20">
-                  <div className="w-full flex items-center justify-between">
+                <div className="col-span-2 lg:col-span-1 flex flex-col items-center gap-6 lg:gap-20">
+                  <div className="w-full flex items-center justify-between px-6 lg:px-0">
                     <Button variant="text" className="bg-secondary hover:bg-secondary rounded-none text-white text-base capitalize">
                       Buy $GWIZ
                     </Button>
@@ -45,11 +45,11 @@ export default function Footer({ className = '' }: IProps) {
                   </p>
                 </div>
 
-                <div className="col-span-1 flex flex-col items-center gap-6">
-                  <h3 className="text-white font-bold text-center uppercase text-xl">
+                <div className="col-span-2 lg:col-span-1 flex flex-col items-center gap-3 lg:gap-6">
+                  <h3 className="w-full text-white font-bold text-left lg:text-center uppercase text-xl px-6 lg:px-0">
                     CONTACT GAS WIZARD
                   </h3>
-                  <div className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-0 lg:gap-3">
                     <Button
                       variant="text"
                       className="flex items-center gap-2 text-white text-lg normal-case font-semibold transition hover:text-primary"
@@ -73,8 +73,8 @@ export default function Footer({ className = '' }: IProps) {
         </div>
       </div>
 
-      <div className="bg-primary py-4">
-        <div className="max-w-6xl mx-auto flex flex-col items-center gap-4">
+      <div className="bg-primary py-8 lg:py-4">
+        <div className="max-w-6xl mx-auto flex flex-col items-center gap-4 px-6 lg:px-0">
           <h4 className="text-white font-bold text-center">
             Copyright © 2022 GAS WIZARD FINANCE Token All Rights Reserved
           </h4>
