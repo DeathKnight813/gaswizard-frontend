@@ -19,7 +19,7 @@ export default function HomePage() {
       <TokenomicsSection />
       <PartnerSection />
       <RoadmapSection />
-      {/* <NewsSection /> */}
+      <NewsSection />
       {/* <FaqSection /> */}
     </div>
   )
