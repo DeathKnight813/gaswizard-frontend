@@ -16,7 +16,7 @@ export default function HomePage() {
       <HeroSection />
       <IntroSection />
       <TokenSaleSection />
-      {/* <TokenomicsSection /> */}
+      <TokenomicsSection />
       {/* <PartnerSection /> */}
       {/* <RoadmapSection /> */}
       {/* <NewsSection /> */}

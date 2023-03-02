@@ -3,8 +3,8 @@ import SectionTitleSash1 from "../../../components/SectionTitleSash1";
 
 export default function Supply() {
   return (
-    <div className="container max-w-4xl mx-auto flex flex-col items-center gap-8">
-      <h2 className="text-4xl font-black text-center uppercase leading-snug">
+    <div className="container max-w-4xl mx-auto flex flex-col items-center gap-8 px-6 lg:px-0">
+      <h2 className="text-3xl lg:text-4xl font-black text-center uppercase leading-snug">
         Tokenomics
       </h2>
 
@@ -20,7 +20,7 @@ export default function Supply() {
 
       <div className="w-full">
         <div className="grid grid-cols-2 gap-8">
-          <div className="col-span-1 bg-secondary py-8 flex flex-col items-center gap-12">
+          <div className="col-span-2 lg:col-span-1 bg-secondary py-8 flex flex-col items-center gap-6 lg:gap-12">
             <p className="uppercase text-white text-xl font-bold text-center">
               Total Supply:<br />
               <span className="font-extrabold text-xl">
@@ -36,7 +36,7 @@ export default function Supply() {
             </p>
           </div>
 
-          <div className="col-span-1 bg-secondary py-8 flex flex-col items-center gap-12">
+          <div className="col-span-2 lg:col-span-1 bg-secondary py-8 flex flex-col items-center gap-6 lg:gap-12">
             <p className="uppercase text-white text-xl font-bold text-center">
               Burn Supply:<br />
               <span className="font-extrabold text-xl normal-case">
