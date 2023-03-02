@@ -20,7 +20,7 @@ export default function HomePage() {
       <PartnerSection />
       <RoadmapSection />
       <NewsSection />
-      {/* <FaqSection /> */}
+      <FaqSection />
     </div>
   )
 }

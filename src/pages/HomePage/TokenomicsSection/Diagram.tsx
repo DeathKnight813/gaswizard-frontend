@@ -49,7 +49,7 @@ export default function Diagram() {
             ))}
           </div>
         </div>
-        <div className="col-span-2 lg:col-span-1">
+        <div className="col-span-2 lg:col-span-1 flex justify-center">
           <div>
             <img src="/assets/images/chart.png" alt="chart" />
           </div>

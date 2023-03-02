@@ -69,13 +69,13 @@ export default function FaqSection() {
   }
   return (
     <div className="container max-w-6xl mx-auto flex flex-col items-center gap-8">
-      <h2 className="text-4xl font-black text-center uppercase leading-snug">
+      <h2 className="text-3xl lg:text-4xl font-black text-center uppercase leading-snug text-darkPrimary">
         Frequently Asked Questions
       </h2>
 
       <SectionTitleSash1 leftColor="darkPrimary" rightColor="primary" />
 
-      <div className="flex flex-col gap-2">
+      <div className="w-full flex flex-col gap-2 px-6 lg:px-0">
         {FAQS.map((faqItem: IFaq) => (
           <Accordion
             key={faqItem.id}
@@ -88,7 +88,7 @@ export default function FaqSection() {
           >
             <AccordionHeader
               onClick={() => handleAccordion(faqItem.id)}
-              className="border-none text-white hover:text-white bg-primary py-7 px-7 rounded-lg"
+              className="border-none text-white hover:text-white bg-primary py-7 px-7 rounded-lg text-left text-base lg:text-lg"
             >
               {faqItem.question}
             </AccordionHeader>
