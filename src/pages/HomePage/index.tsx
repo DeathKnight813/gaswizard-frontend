@@ -15,7 +15,7 @@ export default function HomePage() {
     <div className="flex flex-col gap-16 lg:gap-32">
       <HeroSection />
       <IntroSection />
-      {/* <TokenSaleSection /> */}
+      <TokenSaleSection />
       {/* <TokenomicsSection /> */}
       {/* <PartnerSection /> */}
       {/* <RoadmapSection /> */}

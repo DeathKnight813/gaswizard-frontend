@@ -6,14 +6,14 @@ import SectionTitleSash1 from "../../../components/SectionTitleSash1";
 
 export default function TokenSale() {
   return (
-    <div className="bg-primary py-16">
+    <div className="bg-primary py-16 px-6 lg:px-0">
       <div className="container max-w-xl mx-auto flex flex-col items-center gap-8">
-        <h2 className="text-4xl font-black text-center text-white uppercase leading-snug">
+        <h2 className="text-3xl lg:text-4xl font-black text-center text-white uppercase leading-snug">
           Presale Stage 1
         </h2>
         <SectionTitleSash1 />
-        <p className="text-center text-xl text-white capitalize tracking-wider">
-          <span className="font-black text-2xl">0</span> Days <span className="font-black text-2xl">9</span> hours <span className="font-black text-2xl">40</span> minutes <span className="font-black text-2xl">50</span> seconds remaining until presale phase 3 ends
+        <p className="text-center text-base lg:text-xl text-white capitalize tracking-wider">
+          <span className="font-black text-xl lg:text-2xl">0</span> Days <span className="font-black text-xl lg:text-2xl">9</span> hours <span className="font-black text-xl lg:text-2xl">40</span> minutes <span className="font-black text-xl lg:text-2xl">50</span> seconds remaining until presale phase 3 ends
         </p>
         <div className="border-white border-2 rounded-xl py-2 px-6 text-white">
           <p>First CEX Launch Will Go Live On Friday 31st March 2023</p>
