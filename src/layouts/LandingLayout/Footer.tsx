@@ -1,6 +1,6 @@
+import React from 'react'
 import { Icon } from '@iconify/react';
 import { Button } from '@material-tailwind/react';
-import React from 'react'
 
 interface IProps {
   className?: string;

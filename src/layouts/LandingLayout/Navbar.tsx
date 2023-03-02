@@ -1,12 +1,26 @@
-import React from 'react'
+import React, { useMemo, useState } from 'react'
 import { Button, IconButton } from '@material-tailwind/react'
 import { Icon } from '@iconify/react'
 import useMobileMenu from '../../hooks/useMobileMenu'
 
 export default function Navbar() {
   const { openMenu } = useMobileMenu()
+
+  const [rootClassName, setRootClassName] = useState<string>('bg-white px-6 py-4 sticky top-0 z-40')
+
+  const toggleShadow = () => {
+    const scrolled = document.documentElement.scrollTop;
+    if (scrolled > 100) {
+      setRootClassName('bg-white px-6 py-4 sticky top-0 z-40 shadow-2xl');
+    } else if (scrolled <= 100) {
+      setRootClassName('bg-white px-6 py-4 sticky top-0 z-40');
+    }
+  }
+
+  window.addEventListener('scroll', toggleShadow);
+
   return (
-    <div className="bg-white px-6 py-4 sticky top-0 z-40">
+    <div className={rootClassName}>
       <div className="container mx-auto">
         <div className="flex justify-between items-center md:items-end">
           <img src="/assets/images/logo.png" alt="Logo" className="w-56" />
