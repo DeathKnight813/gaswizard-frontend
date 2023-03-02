@@ -12,9 +12,9 @@ import TokenSaleSection from './TokenSaleSection'
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col gap-32">
+    <div className="flex flex-col gap-16 lg:gap-32">
       <HeroSection />
-      {/* <IntroSection /> */}
+      <IntroSection />
       {/* <TokenSaleSection /> */}
       {/* <TokenomicsSection /> */}
       {/* <PartnerSection /> */}

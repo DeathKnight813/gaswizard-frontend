@@ -1,19 +1,18 @@
 import React from "react";
 import SectionTitleSash1 from "../../../components/SectionTitleSash1";
-import { COLOR_DARK_PRIMARY, COLOR_PRIMARY } from "../../../utils/constants";
 
 /* ----------------------------------------------------------- */
 
 export default function Concept() {
   return (
-    <div className="grid grid-cols-11 gap-16">
-      <div className="col-span-5">
-        <div>
+    <div className="grid grid-cols-2 lg:grid-cols-11 gap-16">
+      <div className="col-span-2 lg:col-span-5">
+        <div className="w-full px-12 lg:px-0">
           <img src="/assets/images/2nd-section-bg.png" alt="" className="w-full" />
         </div>
       </div>
-      <div className="col-span-6 flex flex-col gap-8">
-        <h1 className="text-4xl font-black text-darkPrimary">
+      <div className="col-span-2 lg:col-span-6 flex flex-col gap-8 px-6 lg:px-0">
+        <h1 className="text-3xl lg:text-4xl font-black text-darkPrimary">
           What is GAS WIZARD?
         </h1>
 

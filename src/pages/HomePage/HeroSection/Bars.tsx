@@ -40,7 +40,7 @@ export default function Bars() {
         </div>
       </div>
 
-      <div className="bg-darkPrimary py-16">
+      <div className="bg-darkPrimary py-10 lg:py-16 px-8 lg:px-0">
         <div className="max-w-sm mx-auto flex flex-col items-center gap-6">
           <div>
             <img src="/assets/images/coinscope-metablaze.png" className="w-64 h-auto" alt="" />

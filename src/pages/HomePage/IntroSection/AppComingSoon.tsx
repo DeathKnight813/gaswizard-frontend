@@ -14,9 +14,9 @@ const DATA: Array<string> = [
 
 export default function AppComingSoon() {
   return (
-    <div className="grid grid-cols-2 gap-32">
-      <div className="col-span-1 flex flex-col gap-8">
-        <h2 className="text-4xl font-black text-darkPrimary uppercase leading-snug">
+    <div className="grid grid-cols-2 gap-8 lg:gap-32">
+      <div className="col-span-2 lg:col-span-1 flex flex-col gap-8 px-6 lg:px-0">
+        <h2 className="text-3xl lg:text-4xl font-black text-darkPrimary uppercase leading-snug">
           Gas <span className="text-secondary">wizard app</span> coming soon
         </h2>
 
@@ -36,8 +36,8 @@ export default function AppComingSoon() {
           ))}
         </ul>
       </div>
-      <div className="col-span-1 flex justify-center">
-        <img src="/assets/images/gas.png" alt="gas" className="w-1/2" />
+      <div className="col-span-2 lg:col-span-1 flex justify-center">
+        <img src="/assets/images/gas.png" alt="gas" className="w-1/3 lg:w-1/2" />
       </div>
     </div>
   )
