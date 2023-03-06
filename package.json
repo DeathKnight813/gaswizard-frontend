@@ -11,10 +11,14 @@
   "dependencies": {
     "@iconify/react": "^4.1.0",
     "@material-tailwind/react": "^1.4.2",
+    "@web3modal/ethereum": "^2.1.2",
+    "@web3modal/react": "^2.1.2",
+    "ethers": "^5.7.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.1",
-    "swiper": "^9.0.5"
+    "swiper": "^9.0.5",
+    "wagmi": "^0.11.7"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",

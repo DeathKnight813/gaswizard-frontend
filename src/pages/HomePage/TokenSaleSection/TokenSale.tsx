@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Progress } from "@material-tailwind/react";
+import { useWeb3Modal, Web3NetworkSwitch } from "@web3modal/react";
 import SectionTitleSash1 from "../../../components/SectionTitleSash1";
+import { useAccount } from "wagmi";
+import { Icon } from "@iconify/react";
 
 /* ----------------------------------------------------------- */
 
 export default function TokenSale() {
+  const { open } = useWeb3Modal()
+  const { isConnected } = useAccount()
+
+  const handleConnectWallet = () => {
+    open()
+  }
+
   return (
     <div className="bg-primary py-16 px-6 lg:px-0">
       <div className="container max-w-xl mx-auto flex flex-col items-center gap-8">
@@ -35,15 +45,52 @@ export default function TokenSale() {
             1 CCHG = 0.018 USDT
           </p>
         </div>
-        <div className="flex items-center gap-8">
-          <Button variant="text" className="bg-secondary hover:bg-secondary rounded-none text-white text-lg capitalize">
-            Buy Now
-          </Button>
-          <Button variant="text" className="bg-darkPrimary hover:bg-darkPrimary rounded-none text-white text-lg capitalize">
-            Whitepaper
-          </Button>
+      </div>
+
+      <div className="max-w-4xl mx-auto mt-8">
+        <div className="flex items-center justify-center gap-8">
+          {isConnected ? (
+            <>
+              <Button
+                variant="text"
+                className="bg-darkPrimary hover:bg-darkPrimary rounded-none text-white text-lg capitalize flex items-center gap-2"
+              >
+                <img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg?v=024" alt="BNB" className="w-6" />
+                Buy with BNB
+              </Button>
+              <Button
+                variant="text"
+                className="bg-darkPrimary hover:bg-darkPrimary rounded-none text-white text-lg capitalize flex items-center gap-2"
+              >
+                <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg?v=024" alt="BUSDT" className="w-6" />
+                Buy with BUSDT
+              </Button>
+              <Button
+                variant="text"
+                className="bg-secondary hover:bg-secondary rounded-none text-white text-lg capitalize flex items-center gap-2"
+              >
+                <Icon icon="wpf:disconnected" className="text-xl text-white" />
+                Disconnect
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                variant="text"
+                className="bg-secondary hover:bg-secondary rounded-none text-white text-lg capitalize"
+                onClick={handleConnectWallet}
+              >
+                Buy Now
+              </Button>
+              <Button variant="text" className="bg-darkPrimary hover:bg-darkPrimary rounded-none text-white text-lg capitalize">
+                Whitepaper
+              </Button>
+            </>
+          )}
+
         </div>
       </div>
+
     </div>
   )
 }
