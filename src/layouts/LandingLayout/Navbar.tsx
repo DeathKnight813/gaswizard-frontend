@@ -36,9 +36,9 @@ export default function Navbar() {
   window.addEventListener('scroll', toggleShadow);
 
   return (
-    <div className="sticky top-0 z-50">
+    <div className="sticky top-0 z-20">
       <div className={`relative ${isShadow && 'shadow-2xl'}`}>
-        <div className="relative bg-white px-6 py-4 z-40">
+        <div className="relative bg-white px-6 py-4 z-20">
           <div className="container mx-auto">
             <div className="flex justify-between items-center md:items-end">
               <img src="/assets/images/logo.png" alt="Logo" className="w-56" />

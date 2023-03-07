@@ -9,13 +9,10 @@ export default function AlertMessage() {
     <Alert
       show={isOpened}
       color={color}
-      animate={{
-        mount: { y: 0 },
-        unmount: { y: 100 }
-      }}
       dismissible={{
         onClose: () => closeAlert(),
       }}
+      className="sticky top-5 z_10000"
     >
       {message}
     </Alert>

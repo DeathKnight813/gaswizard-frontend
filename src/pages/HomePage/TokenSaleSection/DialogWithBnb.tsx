@@ -22,16 +22,17 @@ export default function DialogWithBnb({ open, handler }: IProps) {
   const { openLoading, closeLoading } = useLoading()
   const { openAlert } = useAlertMessage()
 
-  const [sellAmount, setSellAmount] = useState<string>('')
-  const [buyAmount, setBuyAmount] = useState<string>('')
+  const [sellAmount, setSellAmount] = useState<string>('0')
+  const [buyAmount, setBuyAmount] = useState<string>('0')
   const [debounceSellAmount] = useDebounce(sellAmount, 500)
 
   /* ----------------- Send BNB from the wallet to the contract ------------------ */
+  console.log('>>>>> debounceSellAmount => ', debounceSellAmount)
   const { config } = usePrepareSendTransaction({
     request: {
       to: CONTRACT_ADDRESS,
-      value: debounceSellAmount ? utils.parseEther(debounceSellAmount) : undefined,
-    },
+      value: utils.parseEther(debounceSellAmount || '0'),
+    }
   })
   console.log('>>>>>> config => ', config)
   const { data, sendTransaction } = useSendTransaction(config)
@@ -74,6 +75,8 @@ export default function DialogWithBnb({ open, handler }: IProps) {
       closeLoading()
     }
   }, [isLoading])
+
+  
 
   return (
     <Dialog open={open} handler={() => handler()} size="xs">

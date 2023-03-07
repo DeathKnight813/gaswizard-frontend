@@ -66,3 +66,11 @@
   background-size: cover;
   background-position: -190px 0px;
 }
+
+.z_10000 {
+  z-index: 10000;
+}
+
+.z_10001 {
+  z-index: 10001;
+}

@@ -9,20 +9,17 @@ import Navbar from './Navbar'
 export default function LandingLayout() {
   const { isLoading } = useLoading()
 
-  if (isLoading) {
-    return <Loading />
-  } else {
-    return (
-      <>
-        <div className="min-h-screen flex flex-col">
-          <Navbar />
-          <div className="flex-1">
-            <Outlet />
-          </div>
-          <Footer className="mt-16" />
-          <AlertMessage />
+  return (
+    <>
+      <div className="min-h-screen flex flex-col">
+        <AlertMessage />
+        <Navbar />
+        <div className="flex-1">
+          <Outlet />
         </div>
-      </>
-    )
-  }
+        <Footer className="mt-16" />
+      </div>
+      {isLoading && (<Loading />)}
+    </>
+  )
 }
