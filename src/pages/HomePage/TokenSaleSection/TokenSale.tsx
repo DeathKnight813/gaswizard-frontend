@@ -36,8 +36,9 @@ export default function TokenSale({ handleDialogBnbOpened, handleDialogBusdtOpen
     if (switchNetwork && chain?.id !== CHAIN_ID) {
       try {
         switchNetwork(CHAIN_ID)
-      } catch (error) {
+      } catch (error: any) {
         console.log('>>>>>>>> error of switchNetwork => ', error)
+        console.log('>>>>>>>> error.data.originalError => ', error?.data?.originalError)
       }
     }
   }, [switchNetwork, chain])
