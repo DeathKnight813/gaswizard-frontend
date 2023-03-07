@@ -13,4 +13,4 @@ export const REGEX_NUMBER_VALID = /^[0-9]*\.?[0-9]*$/;
 export const CURRENCY_GWIZ_TO_BNB = 0.01;
 export const CURRENCY_GWIZ_TO_BUSDT = 1.57;
 
-export const CHAIN_ID = 5;
+export const CHAIN_ID = 56;
