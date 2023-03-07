@@ -1,19 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Progress } from "@material-tailwind/react";
-import { useWeb3Modal, Web3NetworkSwitch } from "@web3modal/react";
-import SectionTitleSash1 from "../../../components/SectionTitleSash1";
-import { useAccount } from "wagmi";
+import { useWeb3Modal } from "@web3modal/react";
+import { useAccount, useDisconnect, useSwitchNetwork, useNetwork } from "wagmi";
 import { Icon } from "@iconify/react";
+import SectionTitleSash1 from "../../../components/SectionTitleSash1";
+import { CHAIN_ID } from "../../../utils/constants";
 
 /* ----------------------------------------------------------- */
 
-export default function TokenSale() {
+interface IProps {
+  handleDialogBnbOpened: Function;
+  handleDialogBusdtOpened: Function;
+}
+
+/* ----------------------------------------------------------- */
+
+export default function TokenSale({ handleDialogBnbOpened, handleDialogBusdtOpened }: IProps) {
   const { open } = useWeb3Modal()
   const { isConnected } = useAccount()
+  const { disconnect } = useDisconnect()
+  const { switchNetwork } = useSwitchNetwork()
+  const { chain } = useNetwork()
 
-  const handleConnectWallet = () => {
+  const handleConnectWallet = async () => {
     open()
   }
+
+  const handleSwitchNetwork = () => {
+    if (switchNetwork) {
+      switchNetwork(CHAIN_ID)
+    }
+  }
+
+  useEffect(() => {
+    if (switchNetwork && chain?.id !== CHAIN_ID) {
+      switchNetwork(CHAIN_ID)
+    }
+  }, [switchNetwork, chain])
 
   return (
     <div className="bg-primary py-16 px-6 lg:px-0">
@@ -48,12 +71,13 @@ export default function TokenSale() {
       </div>
 
       <div className="max-w-4xl mx-auto mt-8">
-        <div className="flex items-center justify-center gap-8">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-8">
           {isConnected ? (
             <>
               <Button
                 variant="text"
                 className="bg-darkPrimary hover:bg-darkPrimary rounded-none text-white text-lg capitalize flex items-center gap-2"
+                onClick={() => handleDialogBnbOpened()}
               >
                 <img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg?v=024" alt="BNB" className="w-6" />
                 Buy with BNB
@@ -61,13 +85,16 @@ export default function TokenSale() {
               <Button
                 variant="text"
                 className="bg-darkPrimary hover:bg-darkPrimary rounded-none text-white text-lg capitalize flex items-center gap-2"
+                onClick={() => handleDialogBusdtOpened()}
               >
                 <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg?v=024" alt="BUSDT" className="w-6" />
                 Buy with BUSDT
               </Button>
+
               <Button
                 variant="text"
                 className="bg-secondary hover:bg-secondary rounded-none text-white text-lg capitalize flex items-center gap-2"
+                onClick={() => disconnect()}
               >
                 <Icon icon="wpf:disconnected" className="text-xl text-white" />
                 Disconnect
@@ -87,10 +114,8 @@ export default function TokenSale() {
               </Button>
             </>
           )}
-
         </div>
       </div>
-
     </div>
   )
 }
