@@ -11,6 +11,7 @@ import { arbitrum, mainnet, polygon } from "wagmi/chains";
 import { LoadingProvider } from './contexts/LoadingContext'
 import { MobileMenuProvider } from './contexts/MobileMenuContext'
 import Routes from './Routes'
+import { AlertMessageProvider } from './contexts/AlertMessageContext';
 
 const chains = [arbitrum, mainnet, polygon];
 
@@ -35,11 +36,13 @@ function App() {
   return (
     <BrowserRouter>
       <WagmiConfig client={wagmiClient}>
-        <LoadingProvider>
-          <MobileMenuProvider>
-            <Routes />
-          </MobileMenuProvider>
-        </LoadingProvider>
+        <AlertMessageProvider>
+          <LoadingProvider>
+            <MobileMenuProvider>
+              <Routes />
+            </MobileMenuProvider>
+          </LoadingProvider>
+        </AlertMessageProvider>
       </WagmiConfig>
       <Web3Modal
         projectId={import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Button, Progress } from "@material-tailwind/react";
 import { useWeb3Modal } from "@web3modal/react";
 import { useAccount, useDisconnect, useSwitchNetwork, useNetwork } from "wagmi";
@@ -22,24 +22,15 @@ export default function TokenSale({ handleDialogBnbOpened, handleDialogBusdtOpen
   const { switchNetwork } = useSwitchNetwork()
   const { chain } = useNetwork()
 
-  const handleConnectWallet = async () => {
+  //  Connect wallet using web3modal
+  const handleConnectWallet = () => {
     open()
   }
 
-  const handleSwitchNetwork = () => {
-    if (switchNetwork) {
-      switchNetwork(CHAIN_ID)
-    }
-  }
-
+  //  Switch network
   useEffect(() => {
     if (switchNetwork && chain?.id !== CHAIN_ID) {
-      try {
-        switchNetwork(CHAIN_ID)
-      } catch (error: any) {
-        console.log('>>>>>>>> error of switchNetwork => ', error)
-        console.log('>>>>>>>> error.data.originalError => ', error?.data?.originalError)
-      }
+      switchNetwork(CHAIN_ID)
     }
   }, [switchNetwork, chain])
 

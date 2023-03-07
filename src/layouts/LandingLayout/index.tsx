@@ -1,5 +1,6 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
+import AlertMessage from '../../components/AlertMessage'
 import Loading from '../../components/Loading'
 import useLoading from '../../hooks/useLoading'
 import Footer from './Footer'
@@ -19,6 +20,7 @@ export default function LandingLayout() {
             <Outlet />
           </div>
           <Footer className="mt-16" />
+          <AlertMessage />
         </div>
       </>
     )
