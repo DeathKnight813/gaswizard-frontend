@@ -20,7 +20,7 @@ interface IProps {
 }
 
 interface IParamsOfOpenAlert {
-  color: string,
+  color: TColor,
   message: string
 }
 

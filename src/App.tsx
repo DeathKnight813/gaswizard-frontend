@@ -7,13 +7,13 @@ import {
 } from "@web3modal/ethereum";
 import { Web3Modal } from "@web3modal/react";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
-import { arbitrum, mainnet, polygon } from "wagmi/chains";
+import { bsc } from "wagmi/chains";
 import { LoadingProvider } from './contexts/LoadingContext'
 import { MobileMenuProvider } from './contexts/MobileMenuContext'
 import Routes from './Routes'
 import { AlertMessageProvider } from './contexts/AlertMessageContext';
 
-const chains = [arbitrum, mainnet, polygon];
+const chains = [bsc];
 
 // Wagmi client
 const { provider } = configureChains(chains, [

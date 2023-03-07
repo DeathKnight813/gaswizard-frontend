@@ -1,6 +1,8 @@
 import React from "react";
 import SectionTitleSash1 from "../../../components/SectionTitleSash1";
 
+/* ----------------------------------------------------------- */
+
 export default function HowToBuy() {
   return (
     <div className="bg-darkPrimary py-16 px-6 lg:px-6">

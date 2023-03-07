@@ -4,10 +4,14 @@ import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, IconButton } fr
 import CustomInput from "../../../components/CustomInput";
 import { CURRENCY_GWIZ_TO_BUSDT, REGEX_NUMBER_VALID } from "../../../utils/constants";
 
+/* ----------------------------------------------------------- */
+
 interface IProps {
   open: boolean;
   handler: Function;
 }
+
+/* ----------------------------------------------------------- */
 
 export default function DialogWithBusdt({ open, handler }: IProps) {
   const [sellAmount, setSellAmount] = useState<string>('')

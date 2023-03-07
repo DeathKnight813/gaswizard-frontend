@@ -1,18 +1,49 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, IconButton } from "@material-tailwind/react";
+import { useDebounce } from "use-debounce";
+import { usePrepareSendTransaction, useSendTransaction, useWaitForTransaction } from "wagmi";
+import { utils } from "ethers";
+import useLoading from "../../../hooks/useLoading";
+import useAlertMessage from "../../../hooks/useAlertMessage";
 import CustomInput from "../../../components/CustomInput";
-import { CURRENCY_GWIZ_TO_BNB, REGEX_NUMBER_VALID } from "../../../utils/constants";
+import { CONTRACT_ADDRESS, CURRENCY_GWIZ_TO_BNB, REGEX_NUMBER_VALID } from "../../../utils/constants";
+
+/* ----------------------------------------------------------- */
 
 interface IProps {
   open: boolean;
   handler: Function;
 }
 
+/* ----------------------------------------------------------- */
+
 export default function DialogWithBnb({ open, handler }: IProps) {
+  const { openLoading, closeLoading } = useLoading()
+  const { openAlert } = useAlertMessage()
+
   const [sellAmount, setSellAmount] = useState<string>('')
   const [buyAmount, setBuyAmount] = useState<string>('')
+  const [debounceSellAmount] = useDebounce(sellAmount, 500)
 
+  /* ----------------- Send BNB from the wallet to the contract ------------------ */
+  // const { config } = usePrepareSendTransaction({
+  //   request: {
+  //     to: CONTRACT_ADDRESS,
+  //     value: debounceSellAmount ? utils.parseEther(debounceSellAmount) : undefined,
+  //   },
+  // })
+  // console.log('>>>>>> config => ', config)
+  // const { data, sendTransaction } = useSendTransaction(config)
+  // const { isLoading, isSuccess } = useWaitForTransaction({
+  //   hash: data?.hash,
+  //   onSuccess: (transactionReceipt) => {
+  //     console.log('>>>>>> transactionReceipt => ', transactionReceipt)
+  //   }
+  // })
+  /* ----------------------------------------------------------------------------- */
+
+  //  Input sell amount
   const handleSellAmount = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
 
@@ -22,6 +53,7 @@ export default function DialogWithBnb({ open, handler }: IProps) {
     }
   }
 
+  //  Input buy amount
   const handleBuyAmount = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
 
@@ -32,8 +64,16 @@ export default function DialogWithBnb({ open, handler }: IProps) {
   }
 
   const handlePurchase = () => {
-
+    // sendTransaction?.()
   }
+
+  // useEffect(() => {
+  //   if (isLoading) {
+  //     openLoading()
+  //   } else {
+  //     closeLoading()
+  //   }
+  // }, [isLoading])
 
   return (
     <Dialog open={open} handler={() => handler()} size="xs">
@@ -86,6 +126,7 @@ export default function DialogWithBnb({ open, handler }: IProps) {
         <Button
           variant="text"
           className="bg-primary hover:bg-primary rounded-none text-white text-md capitalize"
+          // disabled={!sendTransaction}
           onClick={handlePurchase}
         >
           Purchase

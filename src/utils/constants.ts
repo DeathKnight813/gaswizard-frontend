@@ -14,3 +14,5 @@ export const CURRENCY_GWIZ_TO_BNB = 0.01;
 export const CURRENCY_GWIZ_TO_BUSDT = 1.57;
 
 export const CHAIN_ID = 56;
+
+export const CONTRACT_ADDRESS = "0x5E74074Fb99B835Cb42425Cec4f718e6d11de3ed"; //  Test
