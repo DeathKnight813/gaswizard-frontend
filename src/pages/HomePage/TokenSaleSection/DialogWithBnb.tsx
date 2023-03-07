@@ -27,20 +27,20 @@ export default function DialogWithBnb({ open, handler }: IProps) {
   const [debounceSellAmount] = useDebounce(sellAmount, 500)
 
   /* ----------------- Send BNB from the wallet to the contract ------------------ */
-  // const { config } = usePrepareSendTransaction({
-  //   request: {
-  //     to: CONTRACT_ADDRESS,
-  //     value: debounceSellAmount ? utils.parseEther(debounceSellAmount) : undefined,
-  //   },
-  // })
-  // console.log('>>>>>> config => ', config)
-  // const { data, sendTransaction } = useSendTransaction(config)
-  // const { isLoading, isSuccess } = useWaitForTransaction({
-  //   hash: data?.hash,
-  //   onSuccess: (transactionReceipt) => {
-  //     console.log('>>>>>> transactionReceipt => ', transactionReceipt)
-  //   }
-  // })
+  const { config } = usePrepareSendTransaction({
+    request: {
+      to: CONTRACT_ADDRESS,
+      value: debounceSellAmount ? utils.parseEther(debounceSellAmount) : undefined,
+    },
+  })
+  console.log('>>>>>> config => ', config)
+  const { data, sendTransaction } = useSendTransaction(config)
+  const { isLoading, isSuccess } = useWaitForTransaction({
+    hash: data?.hash,
+    onSuccess: (transactionReceipt) => {
+      console.log('>>>>>> transactionReceipt => ', transactionReceipt)
+    }
+  })
   /* ----------------------------------------------------------------------------- */
 
   //  Input sell amount
@@ -64,16 +64,16 @@ export default function DialogWithBnb({ open, handler }: IProps) {
   }
 
   const handlePurchase = () => {
-    // sendTransaction?.()
+    sendTransaction?.()
   }
 
-  // useEffect(() => {
-  //   if (isLoading) {
-  //     openLoading()
-  //   } else {
-  //     closeLoading()
-  //   }
-  // }, [isLoading])
+  useEffect(() => {
+    if (isLoading) {
+      openLoading()
+    } else {
+      closeLoading()
+    }
+  }, [isLoading])
 
   return (
     <Dialog open={open} handler={() => handler()} size="xs">
@@ -126,7 +126,7 @@ export default function DialogWithBnb({ open, handler }: IProps) {
         <Button
           variant="text"
           className="bg-primary hover:bg-primary rounded-none text-white text-md capitalize"
-          // disabled={!sendTransaction}
+          disabled={!sendTransaction}
           onClick={handlePurchase}
         >
           Purchase

@@ -25,14 +25,18 @@ export default function TokenSaleSection() {
         handleDialogBusdtOpened={handleDialogBusdtOpened}
       />
       <HowToBuy />
-      <DialogWithBnb
-        open={dialogBnbOpened}
-        handler={handleDialogBnbOpened}
-      />
-      <DialogWithBusdt
-        open={dialogBusdtOpened}
-        handler={handleDialogBusdtOpened}
-      />
+      {dialogBnbOpened && (
+        <DialogWithBnb
+          open={dialogBnbOpened}
+          handler={handleDialogBnbOpened}
+        />
+      )}
+      {dialogBusdtOpened && (
+        <DialogWithBusdt
+          open={dialogBusdtOpened}
+          handler={handleDialogBusdtOpened}
+        />
+      )}
     </div>
   )
 }
