@@ -10,8 +10,8 @@ export const COLOR_DARK_SECONDARY = "#555555";
 
 export const REGEX_NUMBER_VALID = /^[0-9]*\.?[0-9]*$/;
 
-export const CURRENCY_GWIZ_TO_BNB = 0.01;
-export const CURRENCY_GWIZ_TO_BUSDT = 1.57;
+export const CURRENCY_GWIZ_TO_BNB = 0.0035;
+export const CURRENCY_GWIZ_TO_BUSDT = 1;
 
 export const CHAIN_ID = 56;
 
