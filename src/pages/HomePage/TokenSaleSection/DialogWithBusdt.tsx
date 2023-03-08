@@ -9,17 +9,19 @@ import { BUSDT_CONTRACT_ABI, BUSDT_CONTRACT_ADDRESS, CONTRACT_ADDRESS, CURRENCY_
 import useLoading from "../../../hooks/useLoading";
 import api from "../../../utils/api";
 import useAlertMessage from "../../../hooks/useAlertMessage";
+import { TSize } from "../../../utils/types";
 
 /* ----------------------------------------------------------- */
 
 interface IProps {
   open: boolean;
   handler: Function;
+  sizeOfDialog: TSize;
 }
 
 /* ----------------------------------------------------------- */
 
-export default function DialogWithBusdt({ open, handler }: IProps) {
+export default function DialogWithBusdt({ open, handler, sizeOfDialog }: IProps) {
   const { address } = useAccount()
   const { openLoading, closeLoading } = useLoading()
   const { openAlert } = useAlertMessage()
@@ -53,7 +55,6 @@ export default function DialogWithBusdt({ open, handler }: IProps) {
           message: 'Claimed.'
         })
       }).catch(error => {
-        console.log('>>>>>>>>> error => ', error)
         closeLoading()
         openAlert({
           color: 'red',
@@ -95,13 +96,8 @@ export default function DialogWithBusdt({ open, handler }: IProps) {
     }
   }, [isLoading])
 
-  // useEffect(() => {
-  //   console.log('>>>> isSuccess => ', isSuccess)
-  //   closeLoading()
-  // }, [isSuccess])
-
   return (
-    <Dialog open={open} handler={() => handler()} size="xs">
+    <Dialog open={open} handler={() => handler()} size={sizeOfDialog}>
       <DialogHeader className="flex items-center justify-between">
         Buy with BUSDT
         <IconButton variant="text" onClick={() => handler()} className="text-2xl text-darkPrimary">

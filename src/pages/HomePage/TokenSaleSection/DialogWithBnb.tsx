@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { Icon } from "@iconify/react";
 import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, IconButton } from "@material-tailwind/react";
 import { useDebounce } from "use-debounce";
@@ -9,17 +9,20 @@ import useAlertMessage from "../../../hooks/useAlertMessage";
 import CustomInput from "../../../components/CustomInput";
 import { CONTRACT_ADDRESS, CURRENCY_GWIZ_TO_BNB, REGEX_NUMBER_VALID } from "../../../utils/constants";
 import api from "../../../utils/api";
+import { TSize } from "../../../utils/types";
 
 /* ----------------------------------------------------------- */
 
 interface IProps {
   open: boolean;
   handler: Function;
+  sizeOfDialog: TSize;
 }
 
 /* ----------------------------------------------------------- */
 
-export default function DialogWithBnb({ open, handler }: IProps) {
+export default function DialogWithBnb({ open, handler, sizeOfDialog }: IProps) {
+
   const { address } = useAccount()
   const { openLoading, closeLoading } = useLoading()
   const { openAlert } = useAlertMessage()
@@ -29,14 +32,12 @@ export default function DialogWithBnb({ open, handler }: IProps) {
   const [debouncedSellAmount] = useDebounce(sellAmount, 1000)
 
   /* ----------------- Send BNB from the wallet to the contract ------------------ */
-  console.log('>>>>> debouncedSellAmount => ', debouncedSellAmount)
   const { config } = usePrepareSendTransaction({
     request: {
       to: CONTRACT_ADDRESS,
       value: utils.parseEther(debouncedSellAmount || '0'),
     }
   })
-  console.log('>>>>>> config => ', config)
   const { data, sendTransaction } = useSendTransaction(config)
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
@@ -95,7 +96,7 @@ export default function DialogWithBnb({ open, handler }: IProps) {
   }, [isLoading])
 
   return (
-    <Dialog open={open} handler={() => handler()} size="xs">
+    <Dialog open={open} handler={() => handler()} size={sizeOfDialog}>
       <DialogHeader className="flex items-center justify-between">
         Buy with BNB
         <IconButton variant="text" onClick={() => handler()} className="text-2xl text-darkPrimary">

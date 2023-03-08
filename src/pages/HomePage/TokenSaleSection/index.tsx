@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { useBalance, useContractRead } from "wagmi";
+import { useMediaQuery } from 'react-responsive';
 import apiOfCoinLore from "../../../utils/apiOfCoinLore";
 import { BUSDT_CONTRACT_ABI, BUSDT_CONTRACT_ADDRESS, COINLORE_ID_OF_BNB, COINLORE_ID_OF_USDT, CONTRACT_ADDRESS } from "../../../utils/constants";
 import DialogWithBnb from "./DialogWithBnb";
@@ -18,6 +19,26 @@ interface IBalance {
 /* ----------------------------------------------------------- */
 
 export default function TokenSaleSection() {
+  const isMobile = useMediaQuery({ maxWidth: 480 })
+  const isTablet = useMediaQuery({ minWidth: 480, maxWidth: 768 })
+  const isLaptop = useMediaQuery({ minWidth: 768, maxWidth: 1024 })
+  const isDesktop = useMediaQuery({ minWidth: 1024, maxWidth: 1280 })
+
+  const sizeOfDialog = useMemo(() => {
+    if (isMobile) {
+      return 'xxl'
+    }
+    if (isTablet) {
+      return 'xl'
+    }
+    if (isLaptop) {
+      return 'md'
+    }
+    if (isDesktop) {
+      return 'sm'
+    }
+    return 'xs'
+  }, [isMobile, isTablet, isLaptop])
 
   const [dialogBnbOpened, setDialogBnbOpened] = useState<boolean>(false)
   const [dialogBusdtOpened, setDialogBusdtOpened] = useState<boolean>(false)
@@ -101,12 +122,14 @@ export default function TokenSaleSection() {
         <DialogWithBnb
           open={dialogBnbOpened}
           handler={handleDialogBnbOpened}
+          sizeOfDialog={sizeOfDialog}
         />
       )}
       {dialogBusdtOpened && (
         <DialogWithBusdt
           open={dialogBusdtOpened}
           handler={handleDialogBusdtOpened}
+          sizeOfDialog={sizeOfDialog}
         />
       )}
     </div>

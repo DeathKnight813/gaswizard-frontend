@@ -23,7 +23,7 @@ const wagmiClient = createClient({
   autoConnect: true,
   connectors: modalConnectors({
     projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
-    version: "2",
+    version: "1",
     appName: "web3Modal",
     chains,
   }),
