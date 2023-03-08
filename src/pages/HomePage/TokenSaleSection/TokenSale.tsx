@@ -4,18 +4,19 @@ import { useWeb3Modal } from "@web3modal/react";
 import { useAccount, useDisconnect, useSwitchNetwork, useNetwork } from "wagmi";
 import { Icon } from "@iconify/react";
 import SectionTitleSash1 from "../../../components/SectionTitleSash1";
-import { CHAIN_ID } from "../../../utils/constants";
+import { CAP_PRICE_IN_USD, CHAIN_ID } from "../../../utils/constants";
 
 /* ----------------------------------------------------------- */
 
 interface IProps {
   handleDialogBnbOpened: Function;
   handleDialogBusdtOpened: Function;
+  balanceInUsd: number;
 }
 
 /* ----------------------------------------------------------- */
 
-export default function TokenSale({ handleDialogBnbOpened, handleDialogBusdtOpened }: IProps) {
+export default function TokenSale({ handleDialogBnbOpened, handleDialogBusdtOpened, balanceInUsd }: IProps) {
   const { open } = useWeb3Modal()
   const { isConnected } = useAccount()
   const { disconnect } = useDisconnect()
@@ -51,13 +52,16 @@ export default function TokenSale({ handleDialogBnbOpened, handleDialogBusdtOpen
           <p className="text-center">1 CCHG = 0.017 USDT</p>
           <p className="text-center">USDT Raised $1,742,679.85</p>
         </div>
+
+        {/* Progress bar */}
         <Progress
-          value={75}
+          value={balanceInUsd / CAP_PRICE_IN_USD * 100}
           className="h-3 rounded-lg"
           barProps={{
             className: 'bg-secondary h-3 rounded-lg'
           }}
         />
+
         <div className="flex flex-col gap-2 text-white">
           <p className="text-center">
             46,076,381 Tokens Remaining Until<br />
