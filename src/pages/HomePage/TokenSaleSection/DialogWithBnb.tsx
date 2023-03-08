@@ -2,12 +2,13 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, IconButton } from "@material-tailwind/react";
 import { useDebounce } from "use-debounce";
-import { usePrepareSendTransaction, useSendTransaction, useWaitForTransaction } from "wagmi";
+import { useAccount, usePrepareSendTransaction, useSendTransaction, useWaitForTransaction } from "wagmi";
 import { utils } from "ethers";
 import useLoading from "../../../hooks/useLoading";
 import useAlertMessage from "../../../hooks/useAlertMessage";
 import CustomInput from "../../../components/CustomInput";
 import { CONTRACT_ADDRESS, CURRENCY_GWIZ_TO_BNB, REGEX_NUMBER_VALID } from "../../../utils/constants";
+import api from "../../../utils/api";
 
 /* ----------------------------------------------------------- */
 
@@ -19,6 +20,7 @@ interface IProps {
 /* ----------------------------------------------------------- */
 
 export default function DialogWithBnb({ open, handler }: IProps) {
+  const { address } = useAccount()
   const { openLoading, closeLoading } = useLoading()
   const { openAlert } = useAlertMessage()
 
@@ -39,9 +41,31 @@ export default function DialogWithBnb({ open, handler }: IProps) {
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
     onSuccess: (transactionReceipt) => {
-      console.log('>>>>>> transactionReceipt => ', transactionReceipt)
+      api.post('invest/invest', {
+        investor: address,
+        tokenId: 1,
+        amount: Number(debouncedSellAmount)
+      }).then(response => {
+        closeLoading()
+        openAlert({
+          color: 'green',
+          message: 'Claimed.'
+        })
+      }).catch(error => {
+        console.log('>>>>>>>>> error => ', error)
+        closeLoading()
+        openAlert({
+          color: 'red',
+          message: 'Error occured. not claimed.'
+        })
+      })
     }
   })
+
+  const handlePurchase = () => {
+    sendTransaction?.()
+  }
+
   /* ----------------------------------------------------------------------------- */
 
   //  Input sell amount
@@ -64,18 +88,11 @@ export default function DialogWithBnb({ open, handler }: IProps) {
     }
   }
 
-  const handlePurchase = () => {
-    sendTransaction?.()
-  }
-
   useEffect(() => {
     if (isLoading) {
       openLoading()
-    } else {
-      closeLoading()
     }
   }, [isLoading])
-  
 
   return (
     <Dialog open={open} handler={() => handler()} size="xs">

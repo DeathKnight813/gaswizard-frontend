@@ -3,10 +3,12 @@ import { Icon } from "@iconify/react";
 import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, IconButton } from "@material-tailwind/react";
 import { useDebounce } from "use-debounce";
 import { utils } from "ethers";
-import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
+import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
 import CustomInput from "../../../components/CustomInput";
 import { BUSDT_CONTRACT_ABI, BUSDT_CONTRACT_ADDRESS, CONTRACT_ADDRESS, CURRENCY_GWIZ_TO_BUSDT, REGEX_NUMBER_VALID } from "../../../utils/constants";
 import useLoading from "../../../hooks/useLoading";
+import api from "../../../utils/api";
+import useAlertMessage from "../../../hooks/useAlertMessage";
 
 /* ----------------------------------------------------------- */
 
@@ -18,27 +20,48 @@ interface IProps {
 /* ----------------------------------------------------------- */
 
 export default function DialogWithBusdt({ open, handler }: IProps) {
+  const { address } = useAccount()
   const { openLoading, closeLoading } = useLoading()
+  const { openAlert } = useAlertMessage()
 
   const [sellAmount, setSellAmount] = useState<string>('0')
   const [buyAmount, setBuyAmount] = useState<string>('0')
 
-  const [debounceSellAmount] = useDebounce(sellAmount, 1000)
+  const [debouncedSellAmount] = useDebounce(sellAmount, 1000)
 
   /* ------------------ Send BUSDT from the wallet to the contract --------------- */
   const { config } = usePrepareContractWrite({
     address: BUSDT_CONTRACT_ADDRESS,
     abi: BUSDT_CONTRACT_ABI,
     functionName: 'transfer',
-    args: [CONTRACT_ADDRESS, utils.parseEther(debounceSellAmount || '0')],
+    args: [CONTRACT_ADDRESS, utils.parseEther(debouncedSellAmount || '0')],
   })
 
   const { data, write } = useContractWrite(config)
 
-  const { isLoading, isSuccess } = useWaitForTransaction({
+  const { isLoading } = useWaitForTransaction({
     hash: data?.hash,
-    onSuccess(transactionReceipt) {
-      console.log('>>>>>> transactionReceipt => ', transactionReceipt)
+    onSuccess: (transactionReceipt) => {
+      api.post('invest/invest', {
+        investor: address,
+        tokenId: 2,
+        amount: Number(debouncedSellAmount)
+      }).then(response => {
+        closeLoading()
+        openAlert({
+          color: 'green',
+          message: 'Claimed.'
+        })
+      }).catch(error => {
+        console.log('>>>>>>>>> error => ', error)
+        closeLoading()
+        openAlert({
+          color: 'red',
+          message: 'Error occured. not claimed.'
+        })
+      })
+    },
+    onError: () => {
       closeLoading()
     }
   })
