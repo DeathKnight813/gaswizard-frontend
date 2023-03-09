@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useDebounce } from "use-debounce";
 import { useBalance, useContractRead } from "wagmi";
 import { useMediaQuery } from 'react-responsive';
 import apiOfCoinLore from "../../../utils/apiOfCoinLore";
@@ -8,10 +7,18 @@ import DialogWithBnb from "./DialogWithBnb";
 import DialogWithBusdt from "./DialogWithBusdt";
 import HowToBuy from "./HowToBuy";
 import TokenSale from "./TokenSale";
+import DialogConnectWallet from "./DialogConnectWallet";
+import api from "../../../utils/api";
+import { ITokenAmountInfo } from "../../../utils/interfaces";
 
 /* ----------------------------------------------------------- */
 
 interface IBalance {
+  bnb: number;
+  busdt: number;
+}
+
+interface ICurrenciesInUsd {
   bnb: number;
   busdt: number;
 }
@@ -24,6 +31,23 @@ export default function TokenSaleSection() {
   const isLaptop = useMediaQuery({ minWidth: 768, maxWidth: 1024 })
   const isDesktop = useMediaQuery({ minWidth: 1024, maxWidth: 1280 })
 
+  const [dialogBnbOpened, setDialogBnbOpened] = useState<boolean>(false)
+  const [dialogBusdtOpened, setDialogBusdtOpened] = useState<boolean>(false)
+  const [dialogConnectWalletOpened, setDialogConnectWalletOpened] = useState<boolean>(false)
+  const [balance, setBalance] = useState<IBalance>({
+    bnb: 0,
+    busdt: 0
+  })
+  const [currenciesInUsd, setCurrenciesInUsd] = useState<ICurrenciesInUsd>({
+    bnb: 0,
+    busdt: 0
+  })
+  const [balanceInUsd, setBalanceInUsd] = useState<number>(0)
+  const [tokenAmountInfo, setTokenAmountInfo] = useState<ITokenAmountInfo>({
+    claimedTokenAmount: 0,
+    totalTokenAmount: 0
+  })
+  /* ---------- Set the width of dialog by the screen size --------- */
   const sizeOfDialog = useMemo(() => {
     if (isMobile) {
       return 'xxl'
@@ -39,38 +63,46 @@ export default function TokenSaleSection() {
     }
     return 'xs'
   }, [isMobile, isTablet, isLaptop])
+  /* --------------------------------------------------------------- */
 
-  const [dialogBnbOpened, setDialogBnbOpened] = useState<boolean>(false)
-  const [dialogBusdtOpened, setDialogBusdtOpened] = useState<boolean>(false)
-  const [balance, setBalance] = useState<IBalance>({
-    bnb: 0,
-    busdt: 0
-  })
-  const [balanceInUsd, setBalanceInUsd] = useState<number>(0)
+  /* -------------- Handle open and close of dialogs --------------- */
+  const handleDialogBnbOpened = () => {
+    setDialogBnbOpened(!dialogBnbOpened)
+  }
 
-  const [debouncedBalance] = useDebounce(balance, 2000)
+  const handleDialogBusdtOpened = () => {
+    setDialogBusdtOpened(!dialogBusdtOpened)
+  }
+
+  const handleDialogConnectWalletOpened = () => {
+    setDialogConnectWalletOpened(!dialogConnectWalletOpened)
+  }
+  /* --------------------------------------------------------------- */
 
   /* ------------------ Get balance of contract --------------- */
   //  Get balance of busdt
   useContractRead({
+    watch: true,
     address: BUSDT_CONTRACT_ADDRESS,
     abi: BUSDT_CONTRACT_ABI,
     functionName: 'balanceOf',
     args: [CONTRACT_ADDRESS],
-    watch: true,
     onSettled: (data: any, error) => {
       if (error) {
         return console.log('>>>>>>> error of balance in busdt => ', error)
       }
-      setBalance({
-        ...balance,
-        busdt: parseInt(data?._hex) / 10 ** 18
-      })
-    }
+      if (data) {
+        setBalance({
+          ...balance,
+          busdt: parseInt(data._hex) / 10 ** 18
+        })
+      }
+    },
   })
 
   //  Get balance of bnb
   useBalance({
+    watch: true,
     address: CONTRACT_ADDRESS,
     onSettled: (data, error) => {
       if (error) {
@@ -84,38 +116,66 @@ export default function TokenSaleSection() {
       }
     }
   })
-  /* ------------------------------------------------------------ */
 
-  const handleDialogBnbOpened = () => {
-    setDialogBnbOpened(!dialogBnbOpened)
-  }
-
-  const handleDialogBusdtOpened = () => {
-    setDialogBusdtOpened(!dialogBusdtOpened)
+  //  Get currencies of BNB and BUSDT hourly
+  const getCurrenciesInUsd = () => {
+    apiOfCoinLore.get(`/ticker/?id=${COINLORE_ID_OF_BNB},${COINLORE_ID_OF_USDT}`)
+      .then(response => {
+        setCurrenciesInUsd({
+          bnb: response.data[1]['price_usd'],
+          busdt: response.data[0]['price_usd']
+        })
+      })
+      .catch(error => { })
   }
 
   useEffect(() => {
-    apiOfCoinLore.get(`/ticker/?id=${COINLORE_ID_OF_BNB},${COINLORE_ID_OF_USDT}`)
+    getCurrenciesInUsd()
+    const interval = setInterval(() => {
+      getCurrenciesInUsd()
+    }, 3600000);
+    return () => clearInterval(interval);
+  }, [])
+
+  //  Balance in USD is updated whenever the balance of contract is changed or currencies in usd are changed
+  useEffect(() => {
+    const balanceOfBusdtInUsd = balance.busdt * currenciesInUsd.busdt
+    const balanceOfBnbInUsd = balance.bnb * currenciesInUsd.busdt
+    setBalanceInUsd(balanceOfBusdtInUsd + balanceOfBnbInUsd)
+  }, [balance])
+  /* ------------------------------------------------------------ */
+
+  /* ----------------- Get token amount infos ------------------- */
+  const getTokenAmountInfo = () => {
+    api.get('/token-amount/get-token-amount-info')
       .then(response => {
-        const balanceOfBusdtInUsd = balance.busdt * response.data[0]['price_usd']
-        const balanceOfBnbInUsd = balance.bnb * response.data[1]['price_usd']
-
-        console.log('>>>>>> balanceOfBusdtInUsd => ', balanceOfBusdtInUsd)
-        console.log('>>>>>> balanceOfBnbInUsd => ', balanceOfBnbInUsd)
-
-        setBalanceInUsd(balanceOfBusdtInUsd + balanceOfBnbInUsd)
+        if (response.data) {
+          setTokenAmountInfo({
+            claimedTokenAmount: response.data.claimed_token_amount,
+            totalTokenAmount: response.data.total_token_amount
+          })
+        }
       })
-      .catch(error => {
+      .catch(error => { })
+  }
 
-      })
-  }, [debouncedBalance])
+  useEffect(() => {
+    getTokenAmountInfo()
+    const interval = setInterval(() => {
+      getTokenAmountInfo()
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [])
+  /* ------------------------------------------------------------ */
 
   return (
     <div>
       <TokenSale
         handleDialogBnbOpened={handleDialogBnbOpened}
         handleDialogBusdtOpened={handleDialogBusdtOpened}
+        handleDialogConnectWalletOpened={handleDialogConnectWalletOpened}
         balanceInUsd={balanceInUsd}
+        tokenAmountInfo={tokenAmountInfo}
       />
       <HowToBuy />
       {dialogBnbOpened && (
@@ -129,6 +189,13 @@ export default function TokenSaleSection() {
         <DialogWithBusdt
           open={dialogBusdtOpened}
           handler={handleDialogBusdtOpened}
+          sizeOfDialog={sizeOfDialog}
+        />
+      )}
+      {dialogConnectWalletOpened && (
+        <DialogConnectWallet
+          open={dialogConnectWalletOpened}
+          handler={handleDialogConnectWalletOpened}
           sizeOfDialog={sizeOfDialog}
         />
       )}

@@ -39,13 +39,14 @@ export default function DialogWithBnb({ open, handler, sizeOfDialog }: IProps) {
     }
   })
   const { data, sendTransaction } = useSendTransaction(config)
-  const { isLoading, isSuccess } = useWaitForTransaction({
+  const { isLoading } = useWaitForTransaction({
     hash: data?.hash,
     onSuccess: (transactionReceipt) => {
       api.post('invest/invest', {
         investor: address,
-        tokenId: 1,
-        amount: Number(debouncedSellAmount)
+        fundTypeId: 1,
+        fundAmount: Number(debouncedSellAmount),
+        tokenAmount: Number(buyAmount)
       }).then(response => {
         closeLoading()
         openAlert({

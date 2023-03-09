@@ -46,8 +46,9 @@ export default function DialogWithBusdt({ open, handler, sizeOfDialog }: IProps)
     onSuccess: (transactionReceipt) => {
       api.post('invest/invest', {
         investor: address,
-        tokenId: 2,
-        amount: Number(debouncedSellAmount)
+        fundTypeId: 2,
+        fundAmount: Number(debouncedSellAmount),
+        tokenAmount: Number(buyAmount)
       }).then(response => {
         closeLoading()
         openAlert({

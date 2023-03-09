@@ -2,33 +2,43 @@ import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import {
   EthereumClient,
-  modalConnectors,
+  // modalConnectors,
   walletConnectProvider,
 } from "@web3modal/ethereum";
 import { Web3Modal } from "@web3modal/react";
-import { configureChains, createClient, WagmiConfig } from "wagmi";
+import { configureChains, createClient, mainnet, WagmiConfig } from "wagmi";
 import { bsc } from "wagmi/chains";
+import { alchemyProvider } from 'wagmi/providers/alchemy';
+import { publicProvider } from 'wagmi/providers/public';
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
+import { InjectedConnector } from 'wagmi/connectors/injected'
+import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { LoadingProvider } from './contexts/LoadingContext'
 import { MobileMenuProvider } from './contexts/MobileMenuContext'
 import Routes from './Routes'
 import { AlertMessageProvider } from './contexts/AlertMessageContext';
 
-const chains = [bsc];
-
-// Wagmi client
-const { provider } = configureChains(chains, [
-  walletConnectProvider({ projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID }),
-]);
+const { chains, provider, webSocketProvider } = configureChains(
+  [bsc],
+  [alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY_API_KEY }), publicProvider()],
+)
 const wagmiClient = createClient({
-  autoConnect: true,
-  connectors: modalConnectors({
-    projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
-    version: "1",
-    appName: "web3Modal",
-    chains,
-  }),
+  autoConnect: false,
+  connectors: [
+    new MetaMaskConnector({ chains }),
+    new WalletConnectConnector({
+      chains,
+      options: {
+        projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
+        version: '2'
+      }
+    }),
+  ],
   provider,
+  webSocketProvider
 });
+
 // Web3Modal Ethereum Client
 const ethereumClient = new EthereumClient(wagmiClient, chains);
 
