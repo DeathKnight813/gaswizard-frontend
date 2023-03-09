@@ -13,7 +13,6 @@ import { publicProvider } from 'wagmi/providers/public';
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { InjectedConnector } from 'wagmi/connectors/injected'
-import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { LoadingProvider } from './contexts/LoadingContext'
 import { MobileMenuProvider } from './contexts/MobileMenuContext'
 import Routes from './Routes'
@@ -27,11 +26,12 @@ const wagmiClient = createClient({
   autoConnect: false,
   connectors: [
     new MetaMaskConnector({ chains }),
+    new InjectedConnector({ chains }),
     new WalletConnectConnector({
       chains,
       options: {
-        // projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
-        version: '1'
+        projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
+        version: '2'
       }
     }),
   ],
