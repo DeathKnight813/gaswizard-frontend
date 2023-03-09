@@ -3,7 +3,7 @@ import { Button, Progress } from "@material-tailwind/react";
 import { useAccount, useDisconnect, useSwitchNetwork, useNetwork } from "wagmi";
 import { Icon } from "@iconify/react";
 import SectionTitleSash1 from "../../../components/SectionTitleSash1";
-import { CAP_PRICE_IN_USD, CHAIN_ID, CURRENCY_GWIZ_TO_BUSDT } from "../../../utils/constants";
+import { CHAIN_ID, CURRENCY_GWIZ_TO_BUSDT } from "../../../utils/constants";
 import { ITokenAmountInfo } from "../../../utils/interfaces";
 
 /* ----------------------------------------------------------- */
