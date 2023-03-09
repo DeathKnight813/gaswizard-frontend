@@ -30,8 +30,8 @@ const wagmiClient = createClient({
     new WalletConnectConnector({
       chains,
       options: {
-        projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
-        version: '2'
+        // projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
+        version: '1'
       }
     }),
   ],
