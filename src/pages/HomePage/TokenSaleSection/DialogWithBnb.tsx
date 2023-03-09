@@ -29,7 +29,7 @@ export default function DialogWithBnb({ open, handler, sizeOfDialog }: IProps) {
 
   const [sellAmount, setSellAmount] = useState<string>('0')
   const [buyAmount, setBuyAmount] = useState<string>('0')
-  const [debouncedSellAmount] = useDebounce(sellAmount, 1000)
+  const [debouncedSellAmount] = useDebounce(sellAmount, 500)
 
   /* ----------------- Send BNB from the wallet to the contract ------------------ */
   const { config } = usePrepareSendTransaction({

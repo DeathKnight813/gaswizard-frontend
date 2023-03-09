@@ -19,7 +19,7 @@ import Routes from './Routes'
 import { AlertMessageProvider } from './contexts/AlertMessageContext';
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [mainnet, bsc],
+  [mainnet],
   [
     alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY_API_KEY }), 
     publicProvider(), 

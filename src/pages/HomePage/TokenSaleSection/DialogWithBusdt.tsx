@@ -29,7 +29,7 @@ export default function DialogWithBusdt({ open, handler, sizeOfDialog }: IProps)
   const [sellAmount, setSellAmount] = useState<string>('0')
   const [buyAmount, setBuyAmount] = useState<string>('0')
 
-  const [debouncedSellAmount] = useDebounce(sellAmount, 1000)
+  const [debouncedSellAmount] = useDebounce(sellAmount, 500)
 
   /* ------------------ Send BUSDT from the wallet to the contract --------------- */
   const { config } = usePrepareContractWrite({
