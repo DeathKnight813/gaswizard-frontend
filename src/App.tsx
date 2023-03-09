@@ -6,7 +6,7 @@ import {
   walletConnectProvider
 } from "@web3modal/ethereum";
 import { Web3Modal } from "@web3modal/react";
-import { configureChains, createClient, mainnet, WagmiConfig } from "wagmi";
+import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { bsc } from "wagmi/chains";
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
@@ -19,7 +19,7 @@ import Routes from './Routes'
 import { AlertMessageProvider } from './contexts/AlertMessageContext';
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [mainnet],
+  [bsc],
   [
     alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY_API_KEY }), 
     publicProvider(), 
