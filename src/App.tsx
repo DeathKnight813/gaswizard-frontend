@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom'
 import {
   EthereumClient,
   // modalConnectors,
-  walletConnectProvider,
+  walletConnectProvider
 } from "@web3modal/ethereum";
 import { Web3Modal } from "@web3modal/react";
 import { configureChains, createClient, mainnet, WagmiConfig } from "wagmi";
@@ -12,15 +12,19 @@ import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
+import { useMediaQuery } from 'react-responsive';
 import { LoadingProvider } from './contexts/LoadingContext'
 import { MobileMenuProvider } from './contexts/MobileMenuContext'
 import Routes from './Routes'
 import { AlertMessageProvider } from './contexts/AlertMessageContext';
-import { useMediaQuery } from 'react-responsive';
 
 const { chains, provider, webSocketProvider } = configureChains(
   [mainnet, bsc],
-  [alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY_API_KEY }), publicProvider()],
+  [
+    alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY_API_KEY }), 
+    publicProvider(), 
+    walletConnectProvider({ projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID })
+  ],
 )
 const wagmiClientForDesktop = createClient({
   autoConnect: false,
@@ -35,7 +39,7 @@ const wagmiClientForDesktop = createClient({
     }),
   ],
   provider,
-  webSocketProvider
+  webSocketProvider,
 });
 
 const wagmiClientForMobile = createClient({
