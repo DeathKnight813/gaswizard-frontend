@@ -5,6 +5,7 @@ import { Icon } from "@iconify/react";
 import SectionTitleSash1 from "../../../components/SectionTitleSash1";
 import { CHAIN_ID, CURRENCY_GWIZ_TO_BUSDT } from "../../../utils/constants";
 import { ITokenAmountInfo } from "../../../utils/interfaces";
+import { Web3Button } from "@web3modal/react";
 
 /* ----------------------------------------------------------- */
 
@@ -107,6 +108,7 @@ export default function TokenSale({
               >
                 Buy Now
               </Button>
+              <Web3Button />
               <Button className="bg-darkPrimary hover:bg-darkPrimary rounded-none text-white text-lg capitalize">
                 Whitepaper
               </Button>
