@@ -11,9 +11,8 @@ import Routes from './Routes'
 import { AlertMessageProvider } from './contexts/AlertMessageContext';
 
 const projectId = import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID
-const chains = [mainnet, bsc]
+const chains = [bsc]
 
-console.log('>>>>>> projectId => ', projectId)
 
 const { provider, webSocketProvider } = configureChains(chains, [w3mProvider({ projectId }), publicProvider()])
 
@@ -24,11 +23,8 @@ const wagmiClient = createClient({
   webSocketProvider
 })
 
-console.log('>>>>>>> wagmiClient => ', wagmiClient)
-
 // Web3Modal Ethereum Client
 const ethereumClient = new EthereumClient(wagmiClient, chains);
-
 
 function App() {
   return (
