@@ -35,18 +35,18 @@ export default function TokenSale({
   const { chain } = useNetwork()
 
   //  Switch network
-  useEffect(() => {
-    if (isConnected && chain?.id !== CHAIN_ID) {
-      if (switchNetwork) {
-        switchNetwork(CHAIN_ID)
-      } else {
-        openAlert({
-          color: 'amber',
-          message: 'Please switch the network to BNB Smart Chain in your wallet.'
-        })
-      }
-    }
-  }, [switchNetwork, chain, isConnected])
+  // useEffect(() => {
+  //   if (isConnected && chain?.id !== CHAIN_ID) {
+  //     if (switchNetwork) {
+  //       switchNetwork(CHAIN_ID)
+  //     } else {
+  //       openAlert({
+  //         color: 'amber',
+  //         message: 'Please switch the network to BNB Smart Chain in your wallet.'
+  //       })
+  //     }
+  //   }
+  // }, [switchNetwork, chain, isConnected])
 
   return (
     <div className="bg-primary py-16 px-6 lg:px-0">
