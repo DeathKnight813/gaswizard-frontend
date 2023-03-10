@@ -35,9 +35,9 @@ export default function DialogWithBnb({ open, handler, sizeOfDialog, remainedTok
   const { config } = usePrepareSendTransaction({
     request: {
       to: CONTRACT_ADDRESS,
-      value: utils.parseEther(debouncedSellAmount || '0')
+      value: utils.parseEther(debouncedSellAmount || '0'),
     },
-    signer
+    signer,
   });
   const { data, sendTransaction } = useSendTransaction(config);
   const { isLoading } = useWaitForTransaction({
