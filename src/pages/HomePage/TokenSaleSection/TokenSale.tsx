@@ -32,8 +32,10 @@ export default function TokenSale({
 
   //  Switch network
   useEffect(() => {
-    if (switchNetwork && chain?.id !== CHAIN_ID) {
-      switchNetwork(CHAIN_ID)
+    console.log('>>>>>> chain => ', chain)
+    console.log('>>>>>> switchNetwork => ', switchNetwork)
+    if (chain?.id !== CHAIN_ID) {
+      switchNetwork?.(CHAIN_ID)
     }
   }, [switchNetwork, chain])
 
