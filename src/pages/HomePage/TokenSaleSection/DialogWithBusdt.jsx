@@ -3,7 +3,7 @@ import { Icon } from "@iconify/react";
 import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, IconButton } from "@material-tailwind/react";
 import { useDebounce } from "use-debounce";
 import { utils } from "ethers";
-import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
+import { useAccount, useContractWrite, usePrepareContractWrite, useSigner, useWaitForTransaction } from "wagmi";
 import CustomInput from "../../../components/CustomInput";
 import { BUSDT_CONTRACT_ABI, BUSDT_CONTRACT_ADDRESS, CHAIN_ID, CONTRACT_ADDRESS, CURRENCY_GWIZ_TO_BUSDT, REGEX_NUMBER_VALID } from "../../../utils/constants";
 import useLoading from "../../../hooks/useLoading";
@@ -14,6 +14,7 @@ import useAlertMessage from "../../../hooks/useAlertMessage";
 
 export default function DialogWithBusdt({ open, handler, sizeOfDialog, remainedTokenAmount }) {
   const { address } = useAccount();
+  const { data: signer } = useSigner();
   const { openLoading, closeLoading } = useLoading();
   const { openAlert } = useAlertMessage();
 
@@ -36,7 +37,8 @@ export default function DialogWithBusdt({ open, handler, sizeOfDialog, remainedT
     abi: BUSDT_CONTRACT_ABI,
     functionName: 'transfer',
     args: [CONTRACT_ADDRESS, utils.parseEther(debouncedSellAmount || '0')],
-    chainId: CHAIN_ID
+    chainId: CHAIN_ID,
+    signer
   });
 
   const { data, write } = useContractWrite(config);
