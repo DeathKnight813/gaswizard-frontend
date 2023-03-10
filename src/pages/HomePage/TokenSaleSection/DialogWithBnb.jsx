@@ -1,14 +1,13 @@
-import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Icon } from "@iconify/react";
 import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, IconButton } from "@material-tailwind/react";
 import { useDebounce } from "use-debounce";
 import { useAccount, usePrepareSendTransaction, useSendTransaction, useWaitForTransaction } from "wagmi";
 import { utils } from "ethers";
-import { optimism } from "wagmi/chains";
 import useLoading from "../../../hooks/useLoading";
 import useAlertMessage from "../../../hooks/useAlertMessage";
 import CustomInput from "../../../components/CustomInput";
-import { CHAIN_ID, CONTRACT_ADDRESS, CURRENCY_GWIZ_TO_BNB, REGEX_NUMBER_VALID } from "../../../utils/constants";
+import { CONTRACT_ADDRESS, CURRENCY_GWIZ_TO_BNB, REGEX_NUMBER_VALID } from "../../../utils/constants";
 import api from "../../../utils/api";
 // import { TSize } from "../../../utils/types";
 
@@ -22,14 +21,22 @@ import api from "../../../utils/api";
 
 /* ----------------------------------------------------------- */
 
-export default function DialogWithBnb({ open, handler, sizeOfDialog }) {
-  const { address } = useAccount()
-  const { openLoading, closeLoading } = useLoading()
-  const { openAlert } = useAlertMessage()
+export default function DialogWithBnb({ open, handler, sizeOfDialog, remainedTokenAmount }) {
+  const { address } = useAccount();
+  const { openLoading, closeLoading } = useLoading();
+  const { openAlert } = useAlertMessage();
 
-  const [sellAmount, setSellAmount] = useState('0')
-  const [buyAmount, setBuyAmount] = useState('0')
-  const [debouncedSellAmount] = useDebounce(sellAmount, 500)
+  const [sellAmount, setSellAmount] = useState('0');
+  const [buyAmount, setBuyAmount] = useState('0');
+  const [debouncedSellAmount] = useDebounce(sellAmount, 500);
+
+  const claimStopped = useMemo(() => {
+    const _buyAmount = Number(buyAmount || '0');
+    if (remainedTokenAmount >= _buyAmount) {
+      return false;
+    }
+    return true;
+  }, [buyAmount, remainedTokenAmount]);
 
   /* ----------------- Send BNB from the wallet to the contract ------------------ */
   const { config } = usePrepareSendTransaction({
@@ -37,8 +44,8 @@ export default function DialogWithBnb({ open, handler, sizeOfDialog }) {
       to: CONTRACT_ADDRESS,
       value: utils.parseEther(debouncedSellAmount || '0')
     },
-  })
-  const { data, sendTransaction } = useSendTransaction(config)
+  });
+  const { data, sendTransaction } = useSendTransaction(config);
   const { isLoading } = useWaitForTransaction({
     hash: data?.hash,
     onSuccess: (transactionReceipt) => {
@@ -48,53 +55,53 @@ export default function DialogWithBnb({ open, handler, sizeOfDialog }) {
         fundAmount: Number(debouncedSellAmount),
         tokenAmount: Number(buyAmount)
       }).then(response => {
-        closeLoading()
+        closeLoading();
         openAlert({
           color: 'green',
           message: 'Claimed.'
-        })
+        });
       }).catch(error => {
-        console.log('>>>>>>>>> error => ', error)
-        closeLoading()
+        console.log('>>>>>>>>> error => ', error);
+        closeLoading();
         openAlert({
           color: 'red',
           message: 'Error occured. not claimed.'
-        })
-      })
+        });
+      });
     }
-  })
+  });
 
   const handlePurchase = () => {
-    sendTransaction?.()
-  }
+    sendTransaction?.();
+  };
 
   /* ----------------------------------------------------------------------------- */
 
   //  Input sell amount
   const handleSellAmount = (e) => {
-    const { value } = e.target
+    const { value } = e.target;
 
     if (value.match(REGEX_NUMBER_VALID)) {
-      setSellAmount(value)
-      setBuyAmount(String(Number(value) / CURRENCY_GWIZ_TO_BNB))
+      setSellAmount(value);
+      setBuyAmount(String(Number(value) / CURRENCY_GWIZ_TO_BNB));
     }
-  }
+  };
 
   //  Input buy amount
   const handleBuyAmount = (e) => {
-    const { value } = e.target
+    const { value } = e.target;
 
     if (value.match(REGEX_NUMBER_VALID)) {
-      setBuyAmount(value)
-      setSellAmount(String(Number(value) * CURRENCY_GWIZ_TO_BNB))
+      setBuyAmount(value);
+      setSellAmount(String(Number(value) * CURRENCY_GWIZ_TO_BNB));
     }
-  }
+  };
 
   useEffect(() => {
     if (isLoading) {
-      openLoading()
+      openLoading();
     }
-  }, [isLoading])
+  }, [isLoading]);
 
   return (
     <Dialog open={open} handler={() => handler()} size={sizeOfDialog}>
@@ -147,12 +154,12 @@ export default function DialogWithBnb({ open, handler, sizeOfDialog }) {
         <Button
           variant="text"
           className="bg-primary hover:bg-primary rounded-none text-white text-md capitalize"
-          disabled={!sendTransaction}
+          disabled={!sendTransaction || claimStopped}
           onClick={handlePurchase}
         >
           Purchase
         </Button>
       </DialogFooter>
     </Dialog>
-  )
+  );
 }

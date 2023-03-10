@@ -16,6 +16,7 @@ interface IProps {
   handleDialogConnectWalletOpened: Function;
   balanceInUsd: number;
   tokenAmountInfo: ITokenAmountInfo;
+  tokenClaimStopped: boolean;
 }
 
 /* ----------------------------------------------------------- */
@@ -25,7 +26,8 @@ export default function TokenSale({
   handleDialogBusdtOpened,
   handleDialogConnectWalletOpened,
   balanceInUsd,
-  tokenAmountInfo
+  tokenAmountInfo,
+  tokenClaimStopped
 }: IProps) {
   const { open } = useWeb3Modal()
   const { openAlert } = useAlertMessage()
@@ -91,6 +93,7 @@ export default function TokenSale({
                 <>
                   <Button
                     className="bg-darkPrimary hover:bg-darkPrimary rounded-none text-white text-lg capitalize flex items-center gap-2"
+                    disabled={tokenClaimStopped}
                     onClick={() => handleDialogBnbOpened()}
                   >
                     <img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg?v=024" alt="BNB" className="w-6" />
@@ -98,6 +101,7 @@ export default function TokenSale({
                   </Button>
                   <Button
                     className="bg-darkPrimary hover:bg-darkPrimary rounded-none text-white text-lg capitalize flex items-center gap-2"
+                    disabled={tokenClaimStopped}
                     onClick={() => handleDialogBusdtOpened()}
                   >
                     <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg?v=024" alt="BUSDT" className="w-6" />
@@ -127,6 +131,7 @@ export default function TokenSale({
             <>
               <Button
                 className="bg-secondary hover:bg-secondary rounded-none text-white text-lg capitalize"
+                disabled={tokenClaimStopped}
                 onClick={() => open()}
               >
                 Buy Now

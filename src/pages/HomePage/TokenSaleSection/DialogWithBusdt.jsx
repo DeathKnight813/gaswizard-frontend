@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, IconButton } from "@material-tailwind/react";
 import { useDebounce } from "use-debounce";
@@ -20,15 +20,23 @@ import useAlertMessage from "../../../hooks/useAlertMessage";
 
 /* ----------------------------------------------------------- */
 
-export default function DialogWithBusdt({ open, handler, sizeOfDialog }) {
-  const { address } = useAccount()
-  const { openLoading, closeLoading } = useLoading()
-  const { openAlert } = useAlertMessage()
+export default function DialogWithBusdt({ open, handler, sizeOfDialog, remainedTokenAmount }) {
+  const { address } = useAccount();
+  const { openLoading, closeLoading } = useLoading();
+  const { openAlert } = useAlertMessage();
 
-  const [sellAmount, setSellAmount] = useState('0')
-  const [buyAmount, setBuyAmount] = useState('0')
+  const [sellAmount, setSellAmount] = useState('0');
+  const [buyAmount, setBuyAmount] = useState('0');
 
-  const [debouncedSellAmount] = useDebounce(sellAmount, 500)
+  const [debouncedSellAmount] = useDebounce(sellAmount, 500);
+
+  const claimStopped = useMemo(() => {
+    const _buyAmount = Number(buyAmount || '0');
+    if (remainedTokenAmount >= _buyAmount) {
+      return false;
+    }
+    return true;
+  }, [buyAmount, remainedTokenAmount]);
 
   /* ------------------ Send BUSDT from the wallet to the contract --------------- */
   const { config } = usePrepareContractWrite({
@@ -37,9 +45,9 @@ export default function DialogWithBusdt({ open, handler, sizeOfDialog }) {
     functionName: 'transfer',
     args: [CONTRACT_ADDRESS, utils.parseEther(debouncedSellAmount || '0')],
     chainId: CHAIN_ID
-  })
+  });
 
-  const { data, write } = useContractWrite(config)
+  const { data, write } = useContractWrite(config);
 
   const { isLoading } = useWaitForTransaction({
     hash: data?.hash,
@@ -50,52 +58,52 @@ export default function DialogWithBusdt({ open, handler, sizeOfDialog }) {
         fundAmount: Number(debouncedSellAmount),
         tokenAmount: Number(buyAmount)
       }).then(response => {
-        closeLoading()
+        closeLoading();
         openAlert({
           color: 'green',
           message: 'Claimed.'
-        })
+        });
       }).catch(error => {
-        closeLoading()
+        closeLoading();
         openAlert({
           color: 'red',
           message: 'Error occured. not claimed.'
-        })
-      })
+        });
+      });
     },
     onError: () => {
-      closeLoading()
+      closeLoading();
     }
-  })
+  });
 
   const handlePurchase = () => {
-    write?.()
-  }
+    write?.();
+  };
   /* ------------------------------------------------------------------------------ */
 
   const handleSellAmount = (e) => {
-    const { value } = e.target
+    const { value } = e.target;
 
     if (value.match(REGEX_NUMBER_VALID)) {
-      setSellAmount(value)
-      setBuyAmount(String(Number(value) / CURRENCY_GWIZ_TO_BUSDT))
+      setSellAmount(value);
+      setBuyAmount(String(Number(value) / CURRENCY_GWIZ_TO_BUSDT));
     }
-  }
+  };
 
   const handleBuyAmount = (e) => {
-    const { value } = e.target
+    const { value } = e.target;
 
     if (value.match(REGEX_NUMBER_VALID)) {
-      setBuyAmount(value)
-      setSellAmount(String(Number(value) * CURRENCY_GWIZ_TO_BUSDT))
+      setBuyAmount(value);
+      setSellAmount(String(Number(value) * CURRENCY_GWIZ_TO_BUSDT));
     }
-  }
+  };
 
   useEffect(() => {
     if (isLoading) {
-      openLoading()
+      openLoading();
     }
-  }, [isLoading])
+  }, [isLoading]);
 
   return (
     <Dialog open={open} handler={() => handler()} size={sizeOfDialog}>
@@ -148,12 +156,12 @@ export default function DialogWithBusdt({ open, handler, sizeOfDialog }) {
         <Button
           variant="text"
           className="bg-primary hover:bg-primary rounded-none text-white text-md capitalize"
-          disabled={!write}
+          disabled={!write || claimStopped}
           onClick={handlePurchase}
         >
           Purchase
         </Button>
       </DialogFooter>
     </Dialog>
-  )
+  );
 }

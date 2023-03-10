@@ -26,57 +26,59 @@ import api from "../../../utils/api";
 /* ----------------------------------------------------------- */
 
 export default function TokenSaleSection() {
-  const isMobile = useMediaQuery({ maxWidth: 480 })
-  const isTablet = useMediaQuery({ minWidth: 480, maxWidth: 768 })
-  const isLaptop = useMediaQuery({ minWidth: 768, maxWidth: 1024 })
-  const isDesktop = useMediaQuery({ minWidth: 1024, maxWidth: 1280 })
+  const isMobile = useMediaQuery({ maxWidth: 480 });
+  const isTablet = useMediaQuery({ minWidth: 480, maxWidth: 768 });
+  const isLaptop = useMediaQuery({ minWidth: 768, maxWidth: 1024 });
+  const isDesktop = useMediaQuery({ minWidth: 1024, maxWidth: 1280 });
 
-  const [dialogBnbOpened, setDialogBnbOpened] = useState(false)
-  const [dialogBusdtOpened, setDialogBusdtOpened] = useState(false)
-  const [dialogConnectWalletOpened, setDialogConnectWalletOpened] = useState(false)
+  const [dialogBnbOpened, setDialogBnbOpened] = useState(false);
+  const [dialogBusdtOpened, setDialogBusdtOpened] = useState(false);
+  const [dialogConnectWalletOpened, setDialogConnectWalletOpened] = useState(false);
   const [balance, setBalance] = useState({
     bnb: 0,
     busdt: 0
-  })
+  });
   const [currenciesInUsd, setCurrenciesInUsd] = useState({
     bnb: 0,
     busdt: 0
-  })
-  const [balanceInUsd, setBalanceInUsd] = useState(0)
+  });
+  const [balanceInUsd, setBalanceInUsd] = useState(0);
   const [tokenAmountInfo, setTokenAmountInfo] = useState({
     claimedTokenAmount: 0,
     totalTokenAmount: 0
-  })
+  });
+  const [tokenClaimStopped, setTokenClaimStopped] = useState(false);
+  const [remainedTokenAmount, setRemainedTokenAmount] = useState(0);
   /* ---------- Set the width of dialog by the screen size --------- */
   const sizeOfDialog = useMemo(() => {
     if (isMobile) {
-      return 'xxl'
+      return 'xxl';
     }
     if (isTablet) {
-      return 'xl'
+      return 'xl';
     }
     if (isLaptop) {
-      return 'md'
+      return 'md';
     }
     if (isDesktop) {
-      return 'sm'
+      return 'sm';
     }
-    return 'xs'
-  }, [isMobile, isTablet, isLaptop])
+    return 'xs';
+  }, [isMobile, isTablet, isLaptop]);
   /* --------------------------------------------------------------- */
 
   /* -------------- Handle open and close of dialogs --------------- */
   const handleDialogBnbOpened = () => {
-    setDialogBnbOpened(!dialogBnbOpened)
-  }
+    setDialogBnbOpened(!dialogBnbOpened);
+  };
 
   const handleDialogBusdtOpened = () => {
-    setDialogBusdtOpened(!dialogBusdtOpened)
-  }
+    setDialogBusdtOpened(!dialogBusdtOpened);
+  };
 
   const handleDialogConnectWalletOpened = () => {
-    setDialogConnectWalletOpened(!dialogConnectWalletOpened)
-  }
+    setDialogConnectWalletOpened(!dialogConnectWalletOpened);
+  };
   /* --------------------------------------------------------------- */
 
   /* ------------------ Get balance of contract --------------- */
@@ -89,16 +91,16 @@ export default function TokenSaleSection() {
     args: [CONTRACT_ADDRESS],
     onSettled: (data, error) => {
       if (error) {
-        return console.log('>>>>>>> error of balance in busdt => ', error)
+        return console.log('>>>>>>> error of balance in busdt => ', error);
       }
       if (data) {
         setBalance({
           ...balance,
           busdt: parseInt(data._hex) / 10 ** 18
-        })
+        });
       }
     },
-  })
+  });
 
   //  Get balance of bnb
   useBalance({
@@ -106,16 +108,16 @@ export default function TokenSaleSection() {
     address: CONTRACT_ADDRESS,
     onSettled: (data, error) => {
       if (error) {
-        return console.log('>>>>>>> error of balance in bnb => ', error)
+        return console.log('>>>>>>> error of balance in bnb => ', error);
       }
       if (data) {
         setBalance({
           ...balance,
           bnb: parseInt(data.value._hex) / 10 ** data.decimals
-        })
+        });
       }
     }
-  })
+  });
 
   //  Get currencies of BNB and BUSDT hourly
   const getCurrenciesInUsd = () => {
@@ -124,25 +126,25 @@ export default function TokenSaleSection() {
         setCurrenciesInUsd({
           bnb: response.data[1]['price_usd'],
           busdt: response.data[0]['price_usd']
-        })
+        });
       })
-      .catch(error => { })
-  }
+      .catch(error => { });
+  };
 
   useEffect(() => {
-    getCurrenciesInUsd()
+    getCurrenciesInUsd();
     const interval = setInterval(() => {
-      getCurrenciesInUsd()
+      getCurrenciesInUsd();
     }, 3600000);
     return () => clearInterval(interval);
-  }, [])
+  }, []);
 
   //  Balance in USD is updated whenever the balance of contract is changed or currencies in usd are changed
   useEffect(() => {
-    const balanceOfBusdtInUsd = balance.busdt * currenciesInUsd.busdt
-    const balanceOfBnbInUsd = balance.bnb * currenciesInUsd.busdt
-    setBalanceInUsd(balanceOfBusdtInUsd + balanceOfBnbInUsd)
-  }, [balance])
+    const balanceOfBusdtInUsd = balance.busdt * currenciesInUsd.busdt;
+    const balanceOfBnbInUsd = balance.bnb * currenciesInUsd.busdt;
+    setBalanceInUsd(balanceOfBusdtInUsd + balanceOfBnbInUsd);
+  }, [balance]);
   /* ------------------------------------------------------------ */
 
   /* ----------------- Get token amount infos ------------------- */
@@ -153,20 +155,30 @@ export default function TokenSaleSection() {
           setTokenAmountInfo({
             claimedTokenAmount: response.data.claimed_token_amount,
             totalTokenAmount: response.data.total_token_amount
-          })
+          });
         }
       })
-      .catch(error => { })
-  }
+      .catch(error => { });
+  };
 
   useEffect(() => {
-    getTokenAmountInfo()
+    getTokenAmountInfo();
     const interval = setInterval(() => {
-      getTokenAmountInfo()
+      getTokenAmountInfo();
     }, 2000);
     return () => clearInterval(interval);
-  }, [])
+  }, []);
   /* ------------------------------------------------------------ */
+
+  useEffect(() => {
+    const remainedTokenAmount = tokenAmountInfo.totalTokenAmount - tokenAmountInfo.claimedTokenAmount;
+    if (remainedTokenAmount <= 0) {
+      setTokenClaimStopped(true);
+    } else {
+      setTokenClaimStopped(false);
+    }
+    setRemainedTokenAmount(remainedTokenAmount);
+  }, [tokenAmountInfo]);
 
   return (
     <div>
@@ -176,6 +188,7 @@ export default function TokenSaleSection() {
         handleDialogConnectWalletOpened={handleDialogConnectWalletOpened}
         balanceInUsd={balanceInUsd}
         tokenAmountInfo={tokenAmountInfo}
+        tokenClaimStopped={tokenClaimStopped}
       />
       <HowToBuy />
       {dialogBnbOpened && (
@@ -183,6 +196,7 @@ export default function TokenSaleSection() {
           open={dialogBnbOpened}
           handler={handleDialogBnbOpened}
           sizeOfDialog={sizeOfDialog}
+          remainedTokenAmount={remainedTokenAmount}
         />
       )}
       {dialogBusdtOpened && (
@@ -190,6 +204,7 @@ export default function TokenSaleSection() {
           open={dialogBusdtOpened}
           handler={handleDialogBusdtOpened}
           sizeOfDialog={sizeOfDialog}
+          remainedTokenAmount={remainedTokenAmount}
         />
       )}
       {dialogConnectWalletOpened && (
@@ -200,5 +215,5 @@ export default function TokenSaleSection() {
         />
       )}
     </div>
-  )
+  );
 }
