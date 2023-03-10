@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Icon } from "@iconify/react";
 import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, IconButton } from "@material-tailwind/react";
 import { useDebounce } from "use-debounce";
-import { useAccount, usePrepareSendTransaction, useSendTransaction, useWaitForTransaction } from "wagmi";
+import { useAccount, usePrepareSendTransaction, useSendTransaction, useSigner, useWaitForTransaction } from "wagmi";
 import { utils } from "ethers";
 import useLoading from "../../../hooks/useLoading";
 import useAlertMessage from "../../../hooks/useAlertMessage";
@@ -14,6 +14,8 @@ import api from "../../../utils/api";
 
 export default function DialogWithBnb({ open, handler, sizeOfDialog, remainedTokenAmount }) {
   const { address } = useAccount();
+  const { data: signer } = useSigner();
+  console.log('>>>>>>> signer => ', signer);
   const { openLoading, closeLoading } = useLoading();
   const { openAlert } = useAlertMessage();
 
@@ -35,6 +37,7 @@ export default function DialogWithBnb({ open, handler, sizeOfDialog, remainedTok
       to: CONTRACT_ADDRESS,
       value: utils.parseEther(debouncedSellAmount || '0')
     },
+    signer
   });
   const { data, sendTransaction } = useSendTransaction(config);
   const { isLoading } = useWaitForTransaction({
