@@ -1,51 +1,52 @@
-import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, IconButton } from "@material-tailwind/react";
 import { useDebounce } from "use-debounce";
-import { useAccount, usePrepareSendTransaction, useSendTransaction, useWaitForTransaction } from "wagmi";
 import { utils } from "ethers";
-import useLoading from "../../../hooks/useLoading";
-import useAlertMessage from "../../../hooks/useAlertMessage";
+import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
 import CustomInput from "../../../components/CustomInput";
-import { CHAIN_ID, CONTRACT_ADDRESS, CURRENCY_GWIZ_TO_BNB, REGEX_NUMBER_VALID } from "../../../utils/constants";
+import { BUSDT_CONTRACT_ABI, BUSDT_CONTRACT_ADDRESS, CHAIN_ID, CONTRACT_ADDRESS, CURRENCY_GWIZ_TO_BUSDT, REGEX_NUMBER_VALID } from "../../../utils/constants";
+import useLoading from "../../../hooks/useLoading";
 import api from "../../../utils/api";
-import { TSize } from "../../../utils/types";
+import useAlertMessage from "../../../hooks/useAlertMessage";
 
 /* ----------------------------------------------------------- */
 
-interface IProps {
-  open: boolean;
-  handler: Function;
-  sizeOfDialog: TSize;
-}
+// interface IProps {
+//   open: boolean;
+//   handler: Function;
+//   sizeOfDialog: TSize;
+// }
 
 /* ----------------------------------------------------------- */
 
-export default function DialogWithBnb({ open, handler, sizeOfDialog }: IProps) {
-
+export default function DialogWithBusdt({ open, handler, sizeOfDialog }) {
   const { address } = useAccount()
   const { openLoading, closeLoading } = useLoading()
   const { openAlert } = useAlertMessage()
 
   const [sellAmount, setSellAmount] = useState<string>('0')
   const [buyAmount, setBuyAmount] = useState<string>('0')
+
   const [debouncedSellAmount] = useDebounce(sellAmount, 500)
 
-  /* ----------------- Send BNB from the wallet to the contract ------------------ */
-  const { config } = usePrepareSendTransaction({
-    request: {
-      to: CONTRACT_ADDRESS,
-      value: utils.parseEther(debouncedSellAmount || '0'),
-      chainId: CHAIN_ID
-    }
+  /* ------------------ Send BUSDT from the wallet to the contract --------------- */
+  const { config } = usePrepareContractWrite({
+    address: BUSDT_CONTRACT_ADDRESS,
+    abi: BUSDT_CONTRACT_ABI,
+    functionName: 'transfer',
+    args: [CONTRACT_ADDRESS, utils.parseEther(debouncedSellAmount || '0')],
+    chainId: CHAIN_ID
   })
-  const { data, sendTransaction } = useSendTransaction(config)
+
+  const { data, write } = useContractWrite(config)
+
   const { isLoading } = useWaitForTransaction({
     hash: data?.hash,
     onSuccess: (transactionReceipt) => {
       api.post('invest/invest', {
         investor: address,
-        fundTypeId: 1,
+        fundTypeId: 2,
         fundAmount: Number(debouncedSellAmount),
         tokenAmount: Number(buyAmount)
       }).then(response => {
@@ -55,39 +56,38 @@ export default function DialogWithBnb({ open, handler, sizeOfDialog }: IProps) {
           message: 'Claimed.'
         })
       }).catch(error => {
-        console.log('>>>>>>>>> error => ', error)
         closeLoading()
         openAlert({
           color: 'red',
           message: 'Error occured. not claimed.'
         })
       })
+    },
+    onError: () => {
+      closeLoading()
     }
   })
 
   const handlePurchase = () => {
-    sendTransaction?.()
+    write?.()
   }
+  /* ------------------------------------------------------------------------------ */
 
-  /* ----------------------------------------------------------------------------- */
-
-  //  Input sell amount
-  const handleSellAmount = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleSellAmount = (e) => {
     const { value } = e.target
 
     if (value.match(REGEX_NUMBER_VALID)) {
       setSellAmount(value)
-      setBuyAmount(String(Number(value) / CURRENCY_GWIZ_TO_BNB))
+      setBuyAmount(String(Number(value) / CURRENCY_GWIZ_TO_BUSDT))
     }
   }
 
-  //  Input buy amount
-  const handleBuyAmount = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleBuyAmount = (e) => {
     const { value } = e.target
 
     if (value.match(REGEX_NUMBER_VALID)) {
       setBuyAmount(value)
-      setSellAmount(String(Number(value) * CURRENCY_GWIZ_TO_BNB))
+      setSellAmount(String(Number(value) * CURRENCY_GWIZ_TO_BUSDT))
     }
   }
 
@@ -100,7 +100,7 @@ export default function DialogWithBnb({ open, handler, sizeOfDialog }: IProps) {
   return (
     <Dialog open={open} handler={() => handler()} size={sizeOfDialog}>
       <DialogHeader className="flex items-center justify-between">
-        Buy with BNB
+        Buy with BUSDT
         <IconButton variant="text" onClick={() => handler()} className="text-2xl text-darkPrimary">
           <Icon icon="material-symbols:close-rounded" />
         </IconButton>
@@ -115,8 +115,8 @@ export default function DialogWithBnb({ open, handler, sizeOfDialog }: IProps) {
               className="border border-gray-500"
               endAdornment={
                 <div className="flex items-center gap-1">
-                  <img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg?v=024" alt="BNB" className="w-6" />
-                  <span className="">BNB</span>
+                  <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg?v=024" alt="BNB" className="w-6" />
+                  <span className="">BUSDT</span>
                 </div>
               }
               placeholder="0"
@@ -148,7 +148,7 @@ export default function DialogWithBnb({ open, handler, sizeOfDialog }: IProps) {
         <Button
           variant="text"
           className="bg-primary hover:bg-primary rounded-none text-white text-md capitalize"
-          disabled={!sendTransaction}
+          disabled={!write}
           onClick={handlePurchase}
         >
           Purchase

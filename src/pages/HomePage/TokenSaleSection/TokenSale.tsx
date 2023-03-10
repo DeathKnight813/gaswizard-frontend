@@ -6,6 +6,7 @@ import SectionTitleSash1 from "../../../components/SectionTitleSash1";
 import { CHAIN_ID, CURRENCY_GWIZ_TO_BUSDT } from "../../../utils/constants";
 import { ITokenAmountInfo } from "../../../utils/interfaces";
 import useAlertMessage from "../../../hooks/useAlertMessage";
+import { Web3Button } from "@web3modal/react";
 
 /* ----------------------------------------------------------- */
 
@@ -123,12 +124,13 @@ export default function TokenSale({
             </>
           ) : (
             <>
-              <Button
+              {/* <Button
                 className="bg-secondary hover:bg-secondary rounded-none text-white text-lg capitalize"
                 onClick={() => handleDialogConnectWalletOpened()}
               >
                 Buy Now
-              </Button>
+              </Button> */}
+              <Web3Button label="Connect Wallet" avatar="true" balance={true} icon="" />
               <Button className="bg-darkPrimary hover:bg-darkPrimary rounded-none text-white text-lg capitalize">
                 Whitepaper
               </Button>
