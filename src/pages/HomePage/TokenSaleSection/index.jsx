@@ -9,19 +9,19 @@ import HowToBuy from "./HowToBuy";
 import TokenSale from "./TokenSale";
 import DialogConnectWallet from "./DialogConnectWallet";
 import api from "../../../utils/api";
-import { ITokenAmountInfo } from "../../../utils/interfaces";
+// import { ITokenAmountInfo } from "../../../utils/interfaces";
 
 /* ----------------------------------------------------------- */
 
-interface IBalance {
-  bnb: number;
-  busdt: number;
-}
+// interface IBalance {
+//   bnb: number;
+//   busdt: number;
+// }
 
-interface ICurrenciesInUsd {
-  bnb: number;
-  busdt: number;
-}
+// interface ICurrenciesInUsd {
+//   bnb: number;
+//   busdt: number;
+// }
 
 /* ----------------------------------------------------------- */
 
@@ -87,7 +87,7 @@ export default function TokenSaleSection() {
     abi: BUSDT_CONTRACT_ABI,
     functionName: 'balanceOf',
     args: [CONTRACT_ADDRESS],
-    onSettled: (data: any, error) => {
+    onSettled: (data, error) => {
       if (error) {
         return console.log('>>>>>>> error of balance in busdt => ', error)
       }

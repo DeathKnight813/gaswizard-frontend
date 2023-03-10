@@ -3,22 +3,28 @@ import { BrowserRouter } from 'react-router-dom'
 import { Web3Modal } from "@web3modal/react";
 import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum';
 import { configureChains, createClient, WagmiConfig } from "wagmi";
-import { bsc } from "wagmi/chains";
+import { mainnet, bsc } from "wagmi/chains";
+import { publicProvider } from 'wagmi/providers/public'
 import { LoadingProvider } from './contexts/LoadingContext'
 import { MobileMenuProvider } from './contexts/MobileMenuContext'
 import Routes from './Routes'
 import { AlertMessageProvider } from './contexts/AlertMessageContext';
 
 const projectId = import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID
-const chains = [bsc]
+const chains = [mainnet, bsc]
 
-const { provider } = configureChains(chains, [w3mProvider({ projectId })])
+console.log('>>>>>> projectId => ', projectId)
+
+const { provider, webSocketProvider } = configureChains(chains, [w3mProvider({ projectId }), publicProvider()])
 
 const wagmiClient = createClient({
   autoConnect: true,
   connectors: w3mConnectors({ projectId, version: 1, chains }),
-  provider
+  provider,
+  webSocketProvider
 })
+
+console.log('>>>>>>> wagmiClient => ', wagmiClient)
 
 // Web3Modal Ethereum Client
 const ethereumClient = new EthereumClient(wagmiClient, chains);
@@ -27,15 +33,17 @@ const ethereumClient = new EthereumClient(wagmiClient, chains);
 function App() {
   return (
     <BrowserRouter>
-      <WagmiConfig client={wagmiClient}>
-        <AlertMessageProvider>
-          <LoadingProvider>
-            <MobileMenuProvider>
-              <Routes />
-            </MobileMenuProvider>
-          </LoadingProvider>
-        </AlertMessageProvider>
-      </WagmiConfig>
+      {wagmiClient && (
+        <WagmiConfig client={wagmiClient}>
+          <AlertMessageProvider>
+            <LoadingProvider>
+              <MobileMenuProvider>
+                <Routes />
+              </MobileMenuProvider>
+            </LoadingProvider>
+          </AlertMessageProvider>
+        </WagmiConfig>
+      )}
       <Web3Modal
         projectId={projectId}
         ethereumClient={ethereumClient}
