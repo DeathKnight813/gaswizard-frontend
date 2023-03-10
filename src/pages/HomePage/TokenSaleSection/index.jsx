@@ -31,19 +31,19 @@ export default function TokenSaleSection() {
   const isLaptop = useMediaQuery({ minWidth: 768, maxWidth: 1024 })
   const isDesktop = useMediaQuery({ minWidth: 1024, maxWidth: 1280 })
 
-  const [dialogBnbOpened, setDialogBnbOpened] = useState<boolean>(false)
-  const [dialogBusdtOpened, setDialogBusdtOpened] = useState<boolean>(false)
-  const [dialogConnectWalletOpened, setDialogConnectWalletOpened] = useState<boolean>(false)
-  const [balance, setBalance] = useState<IBalance>({
+  const [dialogBnbOpened, setDialogBnbOpened] = useState(false)
+  const [dialogBusdtOpened, setDialogBusdtOpened] = useState(false)
+  const [dialogConnectWalletOpened, setDialogConnectWalletOpened] = useState(false)
+  const [balance, setBalance] = useState({
     bnb: 0,
     busdt: 0
   })
-  const [currenciesInUsd, setCurrenciesInUsd] = useState<ICurrenciesInUsd>({
+  const [currenciesInUsd, setCurrenciesInUsd] = useState({
     bnb: 0,
     busdt: 0
   })
-  const [balanceInUsd, setBalanceInUsd] = useState<number>(0)
-  const [tokenAmountInfo, setTokenAmountInfo] = useState<ITokenAmountInfo>({
+  const [balanceInUsd, setBalanceInUsd] = useState(0)
+  const [tokenAmountInfo, setTokenAmountInfo] = useState({
     claimedTokenAmount: 0,
     totalTokenAmount: 0
   })

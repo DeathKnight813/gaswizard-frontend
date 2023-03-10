@@ -25,8 +25,8 @@ export default function DialogWithBusdt({ open, handler, sizeOfDialog }) {
   const { openLoading, closeLoading } = useLoading()
   const { openAlert } = useAlertMessage()
 
-  const [sellAmount, setSellAmount] = useState<string>('0')
-  const [buyAmount, setBuyAmount] = useState<string>('0')
+  const [sellAmount, setSellAmount] = useState('0')
+  const [buyAmount, setBuyAmount] = useState('0')
 
   const [debouncedSellAmount] = useDebounce(sellAmount, 500)
 
