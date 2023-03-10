@@ -9,15 +9,6 @@ import useAlertMessage from "../../../hooks/useAlertMessage";
 import CustomInput from "../../../components/CustomInput";
 import { CONTRACT_ADDRESS, CURRENCY_GWIZ_TO_BNB, REGEX_NUMBER_VALID } from "../../../utils/constants";
 import api from "../../../utils/api";
-// import { TSize } from "../../../utils/types";
-
-/* ----------------------------------------------------------- */
-
-// interface IProps {
-//   open: boolean;
-//   handler: Function;
-//   sizeOfDialog: TSize;
-// }
 
 /* ----------------------------------------------------------- */
 
@@ -48,7 +39,7 @@ export default function DialogWithBnb({ open, handler, sizeOfDialog, remainedTok
   const { data, sendTransaction } = useSendTransaction(config);
   const { isLoading } = useWaitForTransaction({
     hash: data?.hash,
-    onSuccess: (transactionReceipt) => {
+    onSuccess: () => {
       api.post('invest/invest', {
         investor: address,
         fundTypeId: 1,
@@ -61,7 +52,6 @@ export default function DialogWithBnb({ open, handler, sizeOfDialog, remainedTok
           message: 'Claimed.'
         });
       }).catch(error => {
-        console.log('>>>>>>>>> error => ', error);
         closeLoading();
         openAlert({
           color: 'red',

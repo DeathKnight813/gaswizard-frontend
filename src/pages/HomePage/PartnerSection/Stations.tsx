@@ -3,8 +3,12 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper';
 import SectionTitleSash1 from "../../../components/SectionTitleSash1";
 
+/* ----------------------------------------------------------- */
+
 const STATIONS_1: Array<string> = ['tesla.png', 'chargep.png', 'chevron-logo.png', 'shell-logo.png']
 const STATIONS_2: Array<string> = ['711logo.png', 'speedwaylogo.png', 'marathonlogo.png', 'mobil-logo.png', 'bp-logo.png']
+
+/* ----------------------------------------------------------- */
 
 export default function Stations() {
   return (

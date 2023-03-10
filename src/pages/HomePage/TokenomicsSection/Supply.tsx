@@ -1,6 +1,8 @@
 import React from "react";
 import SectionTitleSash1 from "../../../components/SectionTitleSash1";
 
+/* ----------------------------------------------------------- */
+
 export default function Supply() {
   return (
     <div className="container max-w-4xl mx-auto flex flex-col items-center gap-8 px-6 lg:px-0">

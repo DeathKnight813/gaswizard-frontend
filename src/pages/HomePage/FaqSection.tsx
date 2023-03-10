@@ -3,6 +3,8 @@ import { Accordion, AccordionBody, AccordionHeader } from "@material-tailwind/re
 import SectionTitleSash1 from "../../components/SectionTitleSash1";
 import { Icon } from "@iconify/react";
 
+/* ----------------------------------------------------------- */
+
 interface IFaq {
   id: number;
   question: string;
@@ -56,6 +58,8 @@ const FAQS: Array<IFaq> = [
     answer: 'Email us at info@gaswizard.finance and one of our associates will get in contact with you to go over details.'
   }
 ]
+
+/* ----------------------------------------------------------- */
 
 export default function FaqSection() {
   const [openedAccordion, setOpenedAccordion] = useState<Number>(0)

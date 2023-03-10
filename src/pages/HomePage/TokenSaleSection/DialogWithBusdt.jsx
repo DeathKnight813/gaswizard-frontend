@@ -12,14 +12,6 @@ import useAlertMessage from "../../../hooks/useAlertMessage";
 
 /* ----------------------------------------------------------- */
 
-// interface IProps {
-//   open: boolean;
-//   handler: Function;
-//   sizeOfDialog: TSize;
-// }
-
-/* ----------------------------------------------------------- */
-
 export default function DialogWithBusdt({ open, handler, sizeOfDialog, remainedTokenAmount }) {
   const { address } = useAccount();
   const { openLoading, closeLoading } = useLoading();

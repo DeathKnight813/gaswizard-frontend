@@ -5,6 +5,8 @@ import "swiper/css";
 import "swiper/css/pagination";
 import SectionTitleSash1 from "../../components/SectionTitleSash1"
 
+/* ----------------------------------------------------------- */
+
 const DATA: Array<string> = [
   'yf.png',
   'NASDAQ.png',
@@ -14,6 +16,8 @@ const DATA: Array<string> = [
   'bloomberg.png',
   'BENZINGA-1.png'
 ]
+
+/* ----------------------------------------------------------- */
 
 export default function NewsSection() {
   return (

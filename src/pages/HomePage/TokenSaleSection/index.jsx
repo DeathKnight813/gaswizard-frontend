@@ -7,21 +7,7 @@ import DialogWithBnb from "./DialogWithBnb";
 import DialogWithBusdt from "./DialogWithBusdt";
 import HowToBuy from "./HowToBuy";
 import TokenSale from "./TokenSale";
-import DialogConnectWallet from "./DialogConnectWallet";
 import api from "../../../utils/api";
-// import { ITokenAmountInfo } from "../../../utils/interfaces";
-
-/* ----------------------------------------------------------- */
-
-// interface IBalance {
-//   bnb: number;
-//   busdt: number;
-// }
-
-// interface ICurrenciesInUsd {
-//   bnb: number;
-//   busdt: number;
-// }
 
 /* ----------------------------------------------------------- */
 
@@ -33,7 +19,6 @@ export default function TokenSaleSection() {
 
   const [dialogBnbOpened, setDialogBnbOpened] = useState(false);
   const [dialogBusdtOpened, setDialogBusdtOpened] = useState(false);
-  const [dialogConnectWalletOpened, setDialogConnectWalletOpened] = useState(false);
   const [balance, setBalance] = useState({
     bnb: 0,
     busdt: 0
@@ -75,10 +60,6 @@ export default function TokenSaleSection() {
   const handleDialogBusdtOpened = () => {
     setDialogBusdtOpened(!dialogBusdtOpened);
   };
-
-  const handleDialogConnectWalletOpened = () => {
-    setDialogConnectWalletOpened(!dialogConnectWalletOpened);
-  };
   /* --------------------------------------------------------------- */
 
   /* ------------------ Get balance of contract --------------- */
@@ -91,7 +72,7 @@ export default function TokenSaleSection() {
     args: [CONTRACT_ADDRESS],
     onSettled: (data, error) => {
       if (error) {
-        return console.log('>>>>>>> error of balance in busdt => ', error);
+        return;
       }
       if (data) {
         setBalance({
@@ -108,7 +89,7 @@ export default function TokenSaleSection() {
     address: CONTRACT_ADDRESS,
     onSettled: (data, error) => {
       if (error) {
-        return console.log('>>>>>>> error of balance in bnb => ', error);
+        return;
       }
       if (data) {
         setBalance({
@@ -135,14 +116,14 @@ export default function TokenSaleSection() {
     getCurrenciesInUsd();
     const interval = setInterval(() => {
       getCurrenciesInUsd();
-    }, 3600000);
+    }, 600000);
     return () => clearInterval(interval);
   }, []);
 
   //  Balance in USD is updated whenever the balance of contract is changed or currencies in usd are changed
   useEffect(() => {
     const balanceOfBusdtInUsd = balance.busdt * currenciesInUsd.busdt;
-    const balanceOfBnbInUsd = balance.bnb * currenciesInUsd.busdt;
+    const balanceOfBnbInUsd = balance.bnb * currenciesInUsd.bnb;
     setBalanceInUsd(balanceOfBusdtInUsd + balanceOfBnbInUsd);
   }, [balance]);
   /* ------------------------------------------------------------ */
@@ -185,7 +166,6 @@ export default function TokenSaleSection() {
       <TokenSale
         handleDialogBnbOpened={handleDialogBnbOpened}
         handleDialogBusdtOpened={handleDialogBusdtOpened}
-        handleDialogConnectWalletOpened={handleDialogConnectWalletOpened}
         balanceInUsd={balanceInUsd}
         tokenAmountInfo={tokenAmountInfo}
         tokenClaimStopped={tokenClaimStopped}
@@ -205,13 +185,6 @@ export default function TokenSaleSection() {
           handler={handleDialogBusdtOpened}
           sizeOfDialog={sizeOfDialog}
           remainedTokenAmount={remainedTokenAmount}
-        />
-      )}
-      {dialogConnectWalletOpened && (
-        <DialogConnectWallet
-          open={dialogConnectWalletOpened}
-          handler={handleDialogConnectWalletOpened}
-          sizeOfDialog={sizeOfDialog}
         />
       )}
     </div>

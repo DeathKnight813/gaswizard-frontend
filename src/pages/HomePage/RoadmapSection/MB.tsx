@@ -2,9 +2,13 @@ import React from "react";
 import { Icon } from "@iconify/react";
 import { IRoadmapData } from "../../../utils/interfaces";
 
+/* ----------------------------------------------------------- */
+
 interface IProps {
   roadmapData: Array<IRoadmapData>
 }
+
+/* ----------------------------------------------------------- */
 
 export default function MB({ roadmapData }: IProps) {
   return (

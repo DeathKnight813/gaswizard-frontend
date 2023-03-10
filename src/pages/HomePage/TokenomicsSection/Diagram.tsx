@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 
+/* ----------------------------------------------------------- */
+
 interface IData {
   percentage: string;
   title: string;
@@ -27,6 +29,8 @@ const DATA: Array<IData> = [
     bgColorClassName: 'bg-[#005A8F]'
   },
 ]
+
+/* ----------------------------------------------------------- */
 
 export default function Diagram() {
   return (

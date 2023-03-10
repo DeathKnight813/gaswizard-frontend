@@ -2,9 +2,13 @@ import React from "react"
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper';
 
+/* ----------------------------------------------------------- */
+
 const DATA: Array<string> = [
   'gem-finder.png', 'cp.png', 'cn.png', 'logo-moon-1.png', 'coinsniper.png'
 ]
+
+/* ----------------------------------------------------------- */
 
 export default function ListedSites() {
   return (

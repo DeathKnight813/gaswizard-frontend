@@ -1,12 +1,14 @@
 import React from "react";
 import { Icon } from "@iconify/react";
-import { Button } from "@material-tailwind/react";
-import SectionTitleSash1 from "../../../components/SectionTitleSash1";
 import { IRoadmapData } from "../../../utils/interfaces";
+
+/* ----------------------------------------------------------- */
 
 interface IProps {
   roadmapData: Array<IRoadmapData>
 }
+
+/* ----------------------------------------------------------- */
 
 export default function DP({ roadmapData }: IProps) {
   return (

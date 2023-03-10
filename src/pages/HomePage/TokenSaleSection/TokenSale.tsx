@@ -1,19 +1,17 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Button, Progress } from "@material-tailwind/react";
 import { useAccount, useDisconnect, useSwitchNetwork, useNetwork } from "wagmi";
 import { Icon } from "@iconify/react";
 import SectionTitleSash1 from "../../../components/SectionTitleSash1";
 import { CHAIN_ID, CURRENCY_GWIZ_TO_BUSDT } from "../../../utils/constants";
 import { ITokenAmountInfo } from "../../../utils/interfaces";
-import useAlertMessage from "../../../hooks/useAlertMessage";
-import { useWeb3Modal, Web3Button } from "@web3modal/react";
+import { useWeb3Modal } from "@web3modal/react";
 
 /* ----------------------------------------------------------- */
 
 interface IProps {
   handleDialogBnbOpened: Function;
   handleDialogBusdtOpened: Function;
-  handleDialogConnectWalletOpened: Function;
   balanceInUsd: number;
   tokenAmountInfo: ITokenAmountInfo;
   tokenClaimStopped: boolean;
@@ -24,31 +22,15 @@ interface IProps {
 export default function TokenSale({
   handleDialogBnbOpened,
   handleDialogBusdtOpened,
-  handleDialogConnectWalletOpened,
   balanceInUsd,
   tokenAmountInfo,
   tokenClaimStopped
 }: IProps) {
   const { open } = useWeb3Modal()
-  const { openAlert } = useAlertMessage()
   const { isConnected } = useAccount()
   const { disconnect } = useDisconnect()
   const { switchNetwork } = useSwitchNetwork()
   const { chain } = useNetwork()
-
-  //  Switch network
-  // useEffect(() => {
-  //   if (isConnected && chain?.id !== CHAIN_ID) {
-  //     if (switchNetwork) {
-  //       switchNetwork(CHAIN_ID)
-  //     } else {
-  //       openAlert({
-  //         color: 'amber',
-  //         message: 'Please switch the network to BNB Smart Chain in your wallet.'
-  //       })
-  //     }
-  //   }
-  // }, [switchNetwork, chain, isConnected])
 
   return (
     <div className="bg-primary py-16 px-6 lg:px-0">

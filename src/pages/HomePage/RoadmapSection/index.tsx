@@ -5,6 +5,8 @@ import { IRoadmapData } from '../../../utils/interfaces';
 import DP from './DP';
 import MB from './MB';
 
+/* ----------------------------------------------------------- */
+
 const DATA: Array<IRoadmapData> = [
   {
     title: 'Project Formation Phase',
@@ -89,6 +91,8 @@ const DATA: Array<IRoadmapData> = [
     ]
   }
 ]
+
+/* ----------------------------------------------------------- */
 
 export default function RoadmapSection() {
   return (
