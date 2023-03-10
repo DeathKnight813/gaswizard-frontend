@@ -5,6 +5,7 @@ import { Icon } from "@iconify/react";
 import SectionTitleSash1 from "../../../components/SectionTitleSash1";
 import { CHAIN_ID, CURRENCY_GWIZ_TO_BUSDT } from "../../../utils/constants";
 import { ITokenAmountInfo } from "../../../utils/interfaces";
+import { useWeb3Modal } from "@web3modal/react";
 
 /* ----------------------------------------------------------- */
 
@@ -25,6 +26,7 @@ export default function TokenSale({
   balanceInUsd,
   tokenAmountInfo
 }: IProps) {
+  const { open } = useWeb3Modal()
   const { isConnected } = useAccount()
   const { disconnect } = useDisconnect()
   const { switchNetwork } = useSwitchNetwork()
@@ -105,7 +107,7 @@ export default function TokenSale({
             <>
               <Button
                 className="bg-secondary hover:bg-secondary rounded-none text-white text-lg capitalize"
-                onClick={() => handleDialogConnectWalletOpened()}
+                onClick={() => open()}
               >
                 Buy Now
               </Button>

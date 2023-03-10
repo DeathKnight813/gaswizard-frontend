@@ -2,9 +2,9 @@ import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import {
   EthereumClient,
-  modalConnectors,
+  w3mConnectors,
   // modalConnectors,
-  walletConnectProvider
+  w3mProvider
 } from "@web3modal/ethereum";
 import { Web3Modal } from "@web3modal/react";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
@@ -19,59 +19,59 @@ import { MobileMenuProvider } from './contexts/MobileMenuContext'
 import Routes from './Routes'
 import { AlertMessageProvider } from './contexts/AlertMessageContext';
 
-const { chains, provider, webSocketProvider } = configureChains(
-  [bsc],
+const projectId = import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID
+const chains = [bsc]
+const { provider, webSocketProvider } = configureChains(
+  chains,
   [
-    // alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY_API_KEY }), 
-    // publicProvider(), 
-    walletConnectProvider({ projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID })
+    alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY_API_KEY }), 
+    publicProvider(), 
+    w3mProvider({ projectId })
   ],
 )
 const wagmiClientForDesktop = createClient({
   autoConnect: false,
-  // connectors: [
-  //   new MetaMaskConnector({ chains }),
-  //   new WalletConnectConnector({
-  //     chains,
-  //     options: {
-  //       projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
-  //       version: '2'
-  //     }
-  //   }),
-  // ],
-  connectors: modalConnectors({ 
-    version: '1', 
-    appName: 'web3Modal', 
-    chains, 
-    projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID 
-  }),
+  connectors: [
+    new MetaMaskConnector({ chains }),
+    new WalletConnectConnector({
+      chains,
+      options: {
+        projectId,
+        version: '2'
+      }
+    }),
+  ],
+  // connectors: w3mConnectors({
+  //   version: 1,
+  //   chains,
+  //   projectId
+  // }),
   provider,
   webSocketProvider,
 });
 
 const wagmiClientForMobile = createClient({
   autoConnect: false,
-  // connectors: [
-  //   new WalletConnectConnector({
-  //     chains,
-  //     options: {
-  //       version: '1'
-  //     }
-  //   }),
-  //   new WalletConnectConnector({
-  //     chains,
-  //     options: {
-  //       projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
-  //       version: '2'
-  //     }
-  //   }),
-  // ],
-  connectors: modalConnectors({ 
-    version: '1', 
-    appName: 'web3Modal', 
-    chains, 
-    projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID 
-  }),
+  connectors: [
+    new WalletConnectConnector({
+      chains,
+      options: {
+        version: '1'
+      }
+    }),
+    new WalletConnectConnector({
+      chains,
+      options: {
+        projectId,
+        version: '2'
+      }
+    }),
+  ],
+  // connectors: w3mConnectors({
+  //   projectId,
+  //   version: 1,
+  //   chains
+  // }),
   provider,
   webSocketProvider
 });
