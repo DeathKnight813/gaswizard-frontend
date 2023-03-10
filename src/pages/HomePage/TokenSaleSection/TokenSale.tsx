@@ -130,7 +130,7 @@ export default function TokenSale({
               >
                 Buy Now
               </Button> */}
-              <Web3Button label="Connect Wallet" avatar="true" balance={true} icon="" />
+              <Web3Button label="Connect Wallet" avatar="show" balance="show" icon="show" />
               <Button className="bg-darkPrimary hover:bg-darkPrimary rounded-none text-white text-lg capitalize">
                 Whitepaper
               </Button>
