@@ -5,7 +5,7 @@ import { useDebounce } from "use-debounce";
 import { utils } from "ethers";
 import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
 import CustomInput from "../../../components/CustomInput";
-import { BUSDT_CONTRACT_ABI, BUSDT_CONTRACT_ADDRESS, CONTRACT_ADDRESS, CURRENCY_GWIZ_TO_BUSDT, REGEX_NUMBER_VALID } from "../../../utils/constants";
+import { BUSDT_CONTRACT_ABI, BUSDT_CONTRACT_ADDRESS, CHAIN_ID, CONTRACT_ADDRESS, CURRENCY_GWIZ_TO_BUSDT, REGEX_NUMBER_VALID } from "../../../utils/constants";
 import useLoading from "../../../hooks/useLoading";
 import api from "../../../utils/api";
 import useAlertMessage from "../../../hooks/useAlertMessage";
@@ -37,6 +37,7 @@ export default function DialogWithBusdt({ open, handler, sizeOfDialog }: IProps)
     abi: BUSDT_CONTRACT_ABI,
     functionName: 'transfer',
     args: [CONTRACT_ADDRESS, utils.parseEther(debouncedSellAmount || '0')],
+    chainId: CHAIN_ID
   })
 
   const { data, write } = useContractWrite(config)

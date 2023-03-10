@@ -12,7 +12,7 @@ import { bsc } from "wagmi/chains";
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
+import { InjectedConnector } from 'wagmi/connectors/injected'
 import { useMediaQuery } from 'react-responsive';
 import { LoadingProvider } from './contexts/LoadingContext'
 import { MobileMenuProvider } from './contexts/MobileMenuContext'
@@ -24,15 +24,19 @@ const chains = [bsc]
 const { provider, webSocketProvider } = configureChains(
   chains,
   [
-    alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY_API_KEY }), 
-    publicProvider(), 
-    w3mProvider({ projectId })
+    alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY_API_KEY }),
+    publicProvider()
   ],
 )
 const wagmiClientForDesktop = createClient({
   autoConnect: false,
   connectors: [
-    new MetaMaskConnector({ chains }),
+    new InjectedConnector({
+      chains,
+      options: {
+        shimDisconnect: true
+      }
+    }),
     new WalletConnectConnector({
       chains,
       options: {
@@ -41,11 +45,6 @@ const wagmiClientForDesktop = createClient({
       }
     }),
   ],
-  // connectors: w3mConnectors({
-  //   version: 1,
-  //   chains,
-  //   projectId
-  // }),
   provider,
   webSocketProvider,
 });
@@ -67,11 +66,6 @@ const wagmiClientForMobile = createClient({
       }
     }),
   ],
-  // connectors: w3mConnectors({
-  //   projectId,
-  //   version: 1,
-  //   chains
-  // }),
   provider,
   webSocketProvider
 });
@@ -86,37 +80,41 @@ function App() {
   return (
     <BrowserRouter>
       {isTabletOrMobile ? (
-        <>
-          <WagmiConfig client={wagmiClientForMobile}>
-            <AlertMessageProvider>
-              <LoadingProvider>
-                <MobileMenuProvider>
-                  <Routes />
-                </MobileMenuProvider>
-              </LoadingProvider>
-            </AlertMessageProvider>
-          </WagmiConfig>
-          <Web3Modal
-            projectId={import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID}
-            ethereumClient={ethereumClientForMobile}
-          />
-        </>
+        wagmiClientForMobile && ethereumClientForMobile && (
+          <>
+            <WagmiConfig client={wagmiClientForMobile}>
+              <AlertMessageProvider>
+                <LoadingProvider>
+                  <MobileMenuProvider>
+                    <Routes />
+                  </MobileMenuProvider>
+                </LoadingProvider>
+              </AlertMessageProvider>
+            </WagmiConfig>
+            <Web3Modal
+              projectId={projectId}
+              ethereumClient={ethereumClientForMobile}
+            />
+          </>
+        )
       ) : (
-        <>
-          <WagmiConfig client={wagmiClientForDesktop}>
-            <AlertMessageProvider>
-              <LoadingProvider>
-                <MobileMenuProvider>
-                  <Routes />
-                </MobileMenuProvider>
-              </LoadingProvider>
-            </AlertMessageProvider>
-          </WagmiConfig>
-          <Web3Modal
-            projectId={import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID}
-            ethereumClient={ethereumClientForDesktop}
-          />
-        </>
+        wagmiClientForDesktop && ethereumClientForDesktop && (
+          <>
+            <WagmiConfig client={wagmiClientForDesktop}>
+              <AlertMessageProvider>
+                <LoadingProvider>
+                  <MobileMenuProvider>
+                    <Routes />
+                  </MobileMenuProvider>
+                </LoadingProvider>
+              </AlertMessageProvider>
+            </WagmiConfig>
+            <Web3Modal
+              projectId={projectId}
+              ethereumClient={ethereumClientForDesktop}
+            />
+          </>
+        )
       )}
     </BrowserRouter>
   )

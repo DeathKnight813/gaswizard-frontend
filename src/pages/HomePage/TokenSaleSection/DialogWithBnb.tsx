@@ -7,7 +7,7 @@ import { utils } from "ethers";
 import useLoading from "../../../hooks/useLoading";
 import useAlertMessage from "../../../hooks/useAlertMessage";
 import CustomInput from "../../../components/CustomInput";
-import { CONTRACT_ADDRESS, CURRENCY_GWIZ_TO_BNB, REGEX_NUMBER_VALID } from "../../../utils/constants";
+import { CHAIN_ID, CONTRACT_ADDRESS, CURRENCY_GWIZ_TO_BNB, REGEX_NUMBER_VALID } from "../../../utils/constants";
 import api from "../../../utils/api";
 import { TSize } from "../../../utils/types";
 
@@ -36,6 +36,7 @@ export default function DialogWithBnb({ open, handler, sizeOfDialog }: IProps) {
     request: {
       to: CONTRACT_ADDRESS,
       value: utils.parseEther(debouncedSellAmount || '0'),
+      chainId: CHAIN_ID
     }
   })
   const { data, sendTransaction } = useSendTransaction(config)

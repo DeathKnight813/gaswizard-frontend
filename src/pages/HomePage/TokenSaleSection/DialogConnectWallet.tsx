@@ -54,13 +54,14 @@ export default function DialogConnectWallet({ open, handler, sizeOfDialog }: IPr
       </DialogHeader>
       <DialogBody>
         <div className="flex flex-col gap-4">
-          {connectors.map(connector => (
+          {connectors.map((connector, index) => (
             <Button
               className="bg-darkPrimary hover:bg-darkPrimary rounded-none text-white text-lg capitalize flex items-center justify-center gap-1"
-              key={connector.id}
+              key={index}
               onClick={async () => {
+                console.log('>>>>> connector => ', connector)
                 connect({ connector })
-                await handler()
+                handler()
               }}
             >
               {connector.name}

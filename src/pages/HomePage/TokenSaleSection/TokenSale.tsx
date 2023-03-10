@@ -5,7 +5,7 @@ import { Icon } from "@iconify/react";
 import SectionTitleSash1 from "../../../components/SectionTitleSash1";
 import { CHAIN_ID, CURRENCY_GWIZ_TO_BUSDT } from "../../../utils/constants";
 import { ITokenAmountInfo } from "../../../utils/interfaces";
-import { useWeb3Modal } from "@web3modal/react";
+import useAlertMessage from "../../../hooks/useAlertMessage";
 
 /* ----------------------------------------------------------- */
 
@@ -26,7 +26,7 @@ export default function TokenSale({
   balanceInUsd,
   tokenAmountInfo
 }: IProps) {
-  const { open } = useWeb3Modal()
+  const { openAlert } = useAlertMessage()
   const { isConnected } = useAccount()
   const { disconnect } = useDisconnect()
   const { switchNetwork } = useSwitchNetwork()
@@ -34,12 +34,17 @@ export default function TokenSale({
 
   //  Switch network
   useEffect(() => {
-    console.log('>>>>>> chain => ', chain)
-    console.log('>>>>>> switchNetwork => ', switchNetwork)
-    if (chain?.id !== CHAIN_ID) {
-      switchNetwork?.(CHAIN_ID)
+    if (isConnected && chain?.id !== CHAIN_ID) {
+      if (switchNetwork) {
+        switchNetwork(CHAIN_ID)
+      } else {
+        openAlert({
+          color: 'amber',
+          message: 'Please switch the network to BNB Smart Chain in your wallet.'
+        })
+      }
     }
-  }, [switchNetwork, chain])
+  }, [switchNetwork, chain, isConnected])
 
   return (
     <div className="bg-primary py-16 px-6 lg:px-0">
@@ -80,21 +85,34 @@ export default function TokenSale({
         <div className="flex flex-col md:flex-row items-center justify-center gap-8">
           {isConnected ? (
             <>
-              <Button
-                className="bg-darkPrimary hover:bg-darkPrimary rounded-none text-white text-lg capitalize flex items-center gap-2"
-                onClick={() => handleDialogBnbOpened()}
-              >
-                <img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg?v=024" alt="BNB" className="w-6" />
-                Buy with BNB
-              </Button>
-              <Button
-                className="bg-darkPrimary hover:bg-darkPrimary rounded-none text-white text-lg capitalize flex items-center gap-2"
-                onClick={() => handleDialogBusdtOpened()}
-              >
-                <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg?v=024" alt="BUSDT" className="w-6" />
-                Buy with BUSDT
-              </Button>
-
+              {chain?.id === CHAIN_ID ? (
+                <>
+                  <Button
+                    className="bg-darkPrimary hover:bg-darkPrimary rounded-none text-white text-lg capitalize flex items-center gap-2"
+                    onClick={() => handleDialogBnbOpened()}
+                  >
+                    <img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg?v=024" alt="BNB" className="w-6" />
+                    Buy with BNB
+                  </Button>
+                  <Button
+                    className="bg-darkPrimary hover:bg-darkPrimary rounded-none text-white text-lg capitalize flex items-center gap-2"
+                    onClick={() => handleDialogBusdtOpened()}
+                  >
+                    <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg?v=024" alt="BUSDT" className="w-6" />
+                    Buy with BUSDT
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    className="bg-secondary hover:bg-secondary rounded-none text-white text-lg capitalize flex items-center gap-2"
+                    disabled={!switchNetwork}
+                    onClick={() => switchNetwork?.(CHAIN_ID)}
+                  >
+                    Switch to BSC
+                  </Button>
+                </>
+              )}
               <Button
                 className="bg-secondary hover:bg-secondary rounded-none text-white text-lg capitalize flex items-center gap-2"
                 onClick={() => disconnect()}
@@ -107,7 +125,7 @@ export default function TokenSale({
             <>
               <Button
                 className="bg-secondary hover:bg-secondary rounded-none text-white text-lg capitalize"
-                onClick={() => open()}
+                onClick={() => handleDialogConnectWalletOpened()}
               >
                 Buy Now
               </Button>
