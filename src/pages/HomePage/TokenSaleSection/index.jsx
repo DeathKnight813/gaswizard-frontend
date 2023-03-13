@@ -175,7 +175,7 @@ export default function TokenSaleSection() {
     if (!TOKEN_CLAIM_APPROVED) {
       const remainedTokenAmount = tokenAmountInfo.totalTokenAmount - tokenAmountInfo.claimedTokenAmount;
       if (remainedTokenAmount <= 0) {
-        setTokenClaimStopped(true);
+        setTokenClaimStopped(false);
       } else {
         setTokenClaimStopped(false);
       }
