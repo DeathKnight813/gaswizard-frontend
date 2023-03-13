@@ -146,8 +146,8 @@ export default function DialogWithBnb({ open, handler, sizeOfDialog, remainedTok
         <Button
           variant="text"
           className="bg-primary hover:bg-primary rounded-none text-white text-md capitalize"
-          // disabled={!sendTransaction || claimStopped}
-          disabled={!sendTransaction}
+          disabled={!sendTransaction || claimStopped}
+          // disabled={!sendTransaction}
           onClick={handlePurchase}
         >
           Purchase

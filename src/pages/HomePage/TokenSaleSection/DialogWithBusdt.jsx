@@ -150,8 +150,8 @@ export default function DialogWithBusdt({ open, handler, sizeOfDialog, remainedT
         <Button
           variant="text"
           className="bg-primary hover:bg-primary rounded-none text-white text-md capitalize"
-          // disabled={!write || claimStopped}
-          disabled={!write}
+          disabled={!write || claimStopped}
+          // disabled={!write}
           onClick={handlePurchase}
         >
           Purchase

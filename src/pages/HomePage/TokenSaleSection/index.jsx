@@ -176,7 +176,7 @@ export default function TokenSaleSection() {
       const remainedTokenAmount = tokenAmountInfo.totalTokenAmount - tokenAmountInfo.claimedTokenAmount;
       if (remainedTokenAmount <= 0) {
         //  Update it to true in the real production
-        setTokenClaimStopped(false);
+        setTokenClaimStopped(true);
       } else {
         setTokenClaimStopped(false);
       }

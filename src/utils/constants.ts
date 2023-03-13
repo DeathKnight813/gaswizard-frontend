@@ -292,4 +292,4 @@ export const BUSDT_CONTRACT_ABI = [
   }
 ];
 
-export const TOKEN_CLAIM_APPROVED = false;
+export const TOKEN_CLAIM_APPROVED = true;
