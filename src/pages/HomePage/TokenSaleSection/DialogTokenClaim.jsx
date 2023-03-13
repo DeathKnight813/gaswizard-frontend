@@ -31,6 +31,7 @@ export default function DialogTokenClaim({ open, handler, sizeOfDialog, claimabl
       investor: address,
       amount: Number(amount)
     }).then(response => {
+      closeLoading();
       setClaimableTokenInfo({
         ...claimableTokenInfo,
         claimableTokenAmount: response.data
@@ -39,14 +40,19 @@ export default function DialogTokenClaim({ open, handler, sizeOfDialog, claimabl
         color: 'green',
         message: 'Sent to your wallet'
       });
-      closeLoading();
     }).catch(error => {
-      console.log('>>>>>>> error => ', error);
-      openAlert({
-        color: 'red',
-        message: 'Error occured. not sent'
-      });
       closeLoading();
+
+      if (error?.response?.status === 404) {
+        return openAlert({
+          color: 'red',
+          message: "You didn't invest for GWIZ."
+        });
+      }
+      return openAlert({
+        color: 'red',
+        message: 'Error occured. not sent.'
+      });
     });
   };
 
