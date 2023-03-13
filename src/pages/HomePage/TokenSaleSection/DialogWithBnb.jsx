@@ -23,11 +23,13 @@ export default function DialogWithBnb({ open, handler, sizeOfDialog, remainedTok
   const [debouncedSellAmount] = useDebounce(sellAmount, 500);
 
   const claimStopped = useMemo(() => {
-    const _buyAmount = Number(buyAmount || '0');
-    if (remainedTokenAmount >= _buyAmount) {
-      return false;
-    }
-    return true;
+    //  Enable this part in production mode
+    // const _buyAmount = Number(buyAmount || '0');
+    // if (remainedTokenAmount >= _buyAmount) {
+    //   return false;
+    // }
+    // return true;
+    return false
   }, [buyAmount, remainedTokenAmount]);
 
   /* ----------------- Send BNB from the wallet to the contract ------------------ */

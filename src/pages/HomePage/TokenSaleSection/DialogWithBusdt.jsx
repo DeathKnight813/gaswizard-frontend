@@ -24,11 +24,13 @@ export default function DialogWithBusdt({ open, handler, sizeOfDialog, remainedT
   const [debouncedSellAmount] = useDebounce(sellAmount, 500);
 
   const claimStopped = useMemo(() => {
-    const _buyAmount = Number(buyAmount || '0');
-    if (remainedTokenAmount >= _buyAmount) {
-      return false;
-    }
-    return true;
+    //  Enable this in the production mode
+    // const _buyAmount = Number(buyAmount || '0');
+    // if (remainedTokenAmount >= _buyAmount) {
+    //   return false;
+    // }
+    // return true;
+    return false;
   }, [buyAmount, remainedTokenAmount]);
 
   /* ------------------ Send BUSDT from the wallet to the contract --------------- */
