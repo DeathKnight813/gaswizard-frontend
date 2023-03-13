@@ -79,7 +79,7 @@ export default function DialogTokenClaim({ open, handler, sizeOfDialog, claimabl
         <Button
           variant="text"
           className="bg-primary hover:bg-primary rounded-none text-white text-md capitalize"
-          disabled={claimableTokenInfo.claimableTokenAmount - Number(amount) <= 0}
+          disabled={claimableTokenInfo.claimableTokenAmount - Number(amount) < 0}
           onClick={handleClaim}
         >
           Claim
