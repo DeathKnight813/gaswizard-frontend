@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useAccount, useBalance, useContractRead } from "wagmi";
+import { useAccount, useBalance, useContractRead, useProvider } from "wagmi";
 import { useMediaQuery } from 'react-responsive';
 import apiOfCoinLore from "../../../utils/apiOfCoinLore";
 import { BUSDT_CONTRACT_ABI, BUSDT_CONTRACT_ADDRESS, COINLORE_ID_OF_BNB, COINLORE_ID_OF_USDT, CONTRACT_ADDRESS, TOKEN_CLAIM_APPROVED } from "../../../utils/constants";
@@ -231,6 +231,7 @@ export default function TokenSaleSection() {
           handler={handleDialogTokenClaimOpened}
           sizeOfDialog={sizeOfDialog}
           claimableTokenInfo={claimableTokenInfo}
+          setClaimableTokenInfo={setClaimableTokenInfo}
         />
       )}
     </div>

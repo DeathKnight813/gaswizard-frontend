@@ -10,7 +10,7 @@ import api from "../../../utils/api";
 
 /* ----------------------------------------------------------- */
 
-export default function DialogTokenClaim({ open, handler, sizeOfDialog, claimableTokenInfo }) {
+export default function DialogTokenClaim({ open, handler, sizeOfDialog, claimableTokenInfo, setClaimableTokenInfo }) {
   const { address } = useAccount();
   const { openAlert } = useAlertMessage();
   const { openLoading, closeLoading } = useLoading();
@@ -31,6 +31,10 @@ export default function DialogTokenClaim({ open, handler, sizeOfDialog, claimabl
       investor: address,
       amount: Number(amount)
     }).then(response => {
+      setClaimableTokenInfo({
+        ...claimableTokenInfo,
+        claimableTokenAmount: response.data
+      });
       openAlert({
         color: 'green',
         message: 'Sent to your wallet'
