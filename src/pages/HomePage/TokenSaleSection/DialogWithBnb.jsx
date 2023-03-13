@@ -15,7 +15,6 @@ import api from "../../../utils/api";
 export default function DialogWithBnb({ open, handler, sizeOfDialog, remainedTokenAmount }) {
   const { address } = useAccount();
   const { data: signer } = useSigner();
-  console.log('>>>>>>> signer => ', signer);
   const { openLoading, closeLoading } = useLoading();
   const { openAlert } = useAlertMessage();
 

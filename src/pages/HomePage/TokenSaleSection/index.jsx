@@ -1,13 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useBalance, useContractRead } from "wagmi";
+import { useAccount, useBalance, useContractRead } from "wagmi";
 import { useMediaQuery } from 'react-responsive';
 import apiOfCoinLore from "../../../utils/apiOfCoinLore";
-import { BUSDT_CONTRACT_ABI, BUSDT_CONTRACT_ADDRESS, COINLORE_ID_OF_BNB, COINLORE_ID_OF_USDT, CONTRACT_ADDRESS } from "../../../utils/constants";
+import { BUSDT_CONTRACT_ABI, BUSDT_CONTRACT_ADDRESS, COINLORE_ID_OF_BNB, COINLORE_ID_OF_USDT, CONTRACT_ADDRESS, TOKEN_CLAIM_APPROVED } from "../../../utils/constants";
 import DialogWithBnb from "./DialogWithBnb";
 import DialogWithBusdt from "./DialogWithBusdt";
 import HowToBuy from "./HowToBuy";
 import TokenSale from "./TokenSale";
 import api from "../../../utils/api";
+import DialogTokenClaim from "./DialogTokenClaim";
 
 /* ----------------------------------------------------------- */
 
@@ -16,9 +17,11 @@ export default function TokenSaleSection() {
   const isTablet = useMediaQuery({ minWidth: 480, maxWidth: 768 });
   const isLaptop = useMediaQuery({ minWidth: 768, maxWidth: 1024 });
   const isDesktop = useMediaQuery({ minWidth: 1024, maxWidth: 1280 });
+  const { isConnected, address } = useAccount();
 
   const [dialogBnbOpened, setDialogBnbOpened] = useState(false);
   const [dialogBusdtOpened, setDialogBusdtOpened] = useState(false);
+  const [dialogTokenClaimOpened, setDialogTokenClaimOpened] = useState(false);
   const [balance, setBalance] = useState({
     bnb: 0,
     busdt: 0
@@ -34,6 +37,11 @@ export default function TokenSaleSection() {
   });
   const [tokenClaimStopped, setTokenClaimStopped] = useState(false);
   const [remainedTokenAmount, setRemainedTokenAmount] = useState(0);
+  const [claimableTokenInfo, setClaimableTokenInfo] = useState({
+    id: 0,
+    investor: '',
+    claimableTokenAmount: 0
+  });
   /* ---------- Set the width of dialog by the screen size --------- */
   const sizeOfDialog = useMemo(() => {
     if (isMobile) {
@@ -60,45 +68,51 @@ export default function TokenSaleSection() {
   const handleDialogBusdtOpened = () => {
     setDialogBusdtOpened(!dialogBusdtOpened);
   };
+
+  const handleDialogTokenClaimOpened = () => {
+    setDialogTokenClaimOpened(!dialogTokenClaimOpened);
+  };
   /* --------------------------------------------------------------- */
 
   /* ------------------ Get balance of contract --------------- */
-  //  Get balance of busdt
-  useContractRead({
-    watch: true,
-    address: BUSDT_CONTRACT_ADDRESS,
-    abi: BUSDT_CONTRACT_ABI,
-    functionName: 'balanceOf',
-    args: [CONTRACT_ADDRESS],
-    onSettled: (data, error) => {
-      if (error) {
-        return;
-      }
-      if (data) {
-        setBalance({
-          ...balance,
-          busdt: parseInt(data._hex) / 10 ** 18
-        });
-      }
-    },
-  });
+  if (!TOKEN_CLAIM_APPROVED) {
+    //  Get balance of busdt
+    useContractRead({
+      watch: true,
+      address: BUSDT_CONTRACT_ADDRESS,
+      abi: BUSDT_CONTRACT_ABI,
+      functionName: 'balanceOf',
+      args: [CONTRACT_ADDRESS],
+      onSettled: (data, error) => {
+        if (error) {
+          return;
+        }
+        if (data) {
+          setBalance({
+            ...balance,
+            busdt: parseInt(data._hex) / 10 ** 18
+          });
+        }
+      },
+    });
 
-  //  Get balance of bnb
-  useBalance({
-    watch: true,
-    address: CONTRACT_ADDRESS,
-    onSettled: (data, error) => {
-      if (error) {
-        return;
+    //  Get balance of bnb
+    useBalance({
+      watch: true,
+      address: CONTRACT_ADDRESS,
+      onSettled: (data, error) => {
+        if (error) {
+          return;
+        }
+        if (data) {
+          setBalance({
+            ...balance,
+            bnb: parseInt(data.value._hex) / 10 ** data.decimals
+          });
+        }
       }
-      if (data) {
-        setBalance({
-          ...balance,
-          bnb: parseInt(data.value._hex) / 10 ** data.decimals
-        });
-      }
-    }
-  });
+    });
+  }
 
   //  Get currencies of BNB and BUSDT hourly
   const getCurrenciesInUsd = () => {
@@ -113,18 +127,22 @@ export default function TokenSaleSection() {
   };
 
   useEffect(() => {
-    getCurrenciesInUsd();
-    const interval = setInterval(() => {
+    if (!TOKEN_CLAIM_APPROVED) {
       getCurrenciesInUsd();
-    }, 600000);
-    return () => clearInterval(interval);
+      const interval = setInterval(() => {
+        getCurrenciesInUsd();
+      }, 600000);
+      return () => clearInterval(interval);
+    }
   }, []);
 
   //  Balance in USD is updated whenever the balance of contract is changed or currencies in usd are changed
   useEffect(() => {
-    const balanceOfBusdtInUsd = balance.busdt * currenciesInUsd.busdt;
-    const balanceOfBnbInUsd = balance.bnb * currenciesInUsd.bnb;
-    setBalanceInUsd(balanceOfBusdtInUsd + balanceOfBnbInUsd);
+    if (!TOKEN_CLAIM_APPROVED) {
+      const balanceOfBusdtInUsd = balance.busdt * currenciesInUsd.busdt;
+      const balanceOfBnbInUsd = balance.bnb * currenciesInUsd.bnb;
+      setBalanceInUsd(balanceOfBusdtInUsd + balanceOfBnbInUsd);
+    }
   }, [balance]);
   /* ------------------------------------------------------------ */
 
@@ -143,32 +161,51 @@ export default function TokenSaleSection() {
   };
 
   useEffect(() => {
-    getTokenAmountInfo();
-    const interval = setInterval(() => {
+    if (!TOKEN_CLAIM_APPROVED) {
       getTokenAmountInfo();
-    }, 2000);
-    return () => clearInterval(interval);
+      const interval = setInterval(() => {
+        getTokenAmountInfo();
+      }, 2000);
+      return () => clearInterval(interval);
+    }
   }, []);
   /* ------------------------------------------------------------ */
 
   useEffect(() => {
-    const remainedTokenAmount = tokenAmountInfo.totalTokenAmount - tokenAmountInfo.claimedTokenAmount;
-    if (remainedTokenAmount <= 0) {
-      setTokenClaimStopped(true);
-    } else {
-      setTokenClaimStopped(false);
+    if (!TOKEN_CLAIM_APPROVED) {
+      const remainedTokenAmount = tokenAmountInfo.totalTokenAmount - tokenAmountInfo.claimedTokenAmount;
+      if (remainedTokenAmount <= 0) {
+        setTokenClaimStopped(true);
+      } else {
+        setTokenClaimStopped(false);
+      }
+      setRemainedTokenAmount(remainedTokenAmount);
     }
-    setRemainedTokenAmount(remainedTokenAmount);
   }, [tokenAmountInfo]);
+
+  useEffect(() => {
+    if (isConnected && TOKEN_CLAIM_APPROVED) {
+      api.get(`/distribute/get-claimable-token-amount/${address}`)
+        .then(response => {
+          setClaimableTokenInfo({
+            id: response.data.id,
+            investor: address,
+            claimableTokenAmount: response.data.claimable_token_amount
+          });
+        }).catch(error => { });
+    }
+  }, [isConnected]);
 
   return (
     <div>
       <TokenSale
         handleDialogBnbOpened={handleDialogBnbOpened}
         handleDialogBusdtOpened={handleDialogBusdtOpened}
+        handleDialogTokenClaimOpened={handleDialogTokenClaimOpened}
         balanceInUsd={balanceInUsd}
         tokenAmountInfo={tokenAmountInfo}
         tokenClaimStopped={tokenClaimStopped}
+        claimableTokenInfo={claimableTokenInfo}
       />
       <HowToBuy />
       {dialogBnbOpened && (
@@ -185,6 +222,14 @@ export default function TokenSaleSection() {
           handler={handleDialogBusdtOpened}
           sizeOfDialog={sizeOfDialog}
           remainedTokenAmount={remainedTokenAmount}
+        />
+      )}
+      {dialogTokenClaimOpened && (
+        <DialogTokenClaim
+          open={dialogTokenClaimOpened}
+          handler={handleDialogTokenClaimOpened}
+          sizeOfDialog={sizeOfDialog}
+          claimableTokenInfo={claimableTokenInfo}
         />
       )}
     </div>

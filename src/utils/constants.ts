@@ -21,7 +21,8 @@ export const COINLORE_ID_OF_USDT = 518;
 export const CAP_PRICE_IN_USD = 10;
 
 // export const CONTRACT_ADDRESS = "0x5E74074Fb99B835Cb42425Cec4f718e6d11de3ed"; //  The contract
-export const CONTRACT_ADDRESS = "0x2D6E7bA52EF8f899E578D9cfeF9218633AaDE8E7"; //  My wallet
+export const CONTRACT_ADDRESS = "0xB9E3C5693f0B808f50410C4fd28ee7f2B88E1B18"; //  My wallet
+
 export const BUSDT_CONTRACT_ADDRESS =
   "0x55d398326f99059ff775485246999027b3197955";
 export const BUSDT_CONTRACT_ABI = [
@@ -29,7 +30,7 @@ export const BUSDT_CONTRACT_ABI = [
     inputs: [],
     payable: false,
     stateMutability: "nonpayable",
-    type: "constructor",
+    type: "constructor"
   },
   {
     anonymous: false,
@@ -38,23 +39,23 @@ export const BUSDT_CONTRACT_ABI = [
         indexed: true,
         internalType: "address",
         name: "owner",
-        type: "address",
+        type: "address"
       },
       {
         indexed: true,
         internalType: "address",
         name: "spender",
-        type: "address",
+        type: "address"
       },
       {
         indexed: false,
         internalType: "uint256",
         name: "value",
-        type: "uint256",
-      },
+        type: "uint256"
+      }
     ],
     name: "Approval",
-    type: "event",
+    type: "event"
   },
   {
     anonymous: false,
@@ -63,17 +64,17 @@ export const BUSDT_CONTRACT_ABI = [
         indexed: true,
         internalType: "address",
         name: "previousOwner",
-        type: "address",
+        type: "address"
       },
       {
         indexed: true,
         internalType: "address",
         name: "newOwner",
-        type: "address",
-      },
+        type: "address"
+      }
     ],
     name: "OwnershipTransferred",
-    type: "event",
+    type: "event"
   },
   {
     anonymous: false,
@@ -84,11 +85,11 @@ export const BUSDT_CONTRACT_ABI = [
         indexed: false,
         internalType: "uint256",
         name: "value",
-        type: "uint256",
-      },
+        type: "uint256"
+      }
     ],
     name: "Transfer",
-    type: "event",
+    type: "event"
   },
   {
     constant: true,
@@ -97,7 +98,7 @@ export const BUSDT_CONTRACT_ABI = [
     outputs: [{ internalType: "uint8", name: "", type: "uint8" }],
     payable: false,
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     constant: true,
@@ -106,7 +107,7 @@ export const BUSDT_CONTRACT_ABI = [
     outputs: [{ internalType: "string", name: "", type: "string" }],
     payable: false,
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     constant: true,
@@ -115,31 +116,31 @@ export const BUSDT_CONTRACT_ABI = [
     outputs: [{ internalType: "string", name: "", type: "string" }],
     payable: false,
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     constant: true,
     inputs: [
       { internalType: "address", name: "owner", type: "address" },
-      { internalType: "address", name: "spender", type: "address" },
+      { internalType: "address", name: "spender", type: "address" }
     ],
     name: "allowance",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     payable: false,
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     constant: false,
     inputs: [
       { internalType: "address", name: "spender", type: "address" },
-      { internalType: "uint256", name: "amount", type: "uint256" },
+      { internalType: "uint256", name: "amount", type: "uint256" }
     ],
     name: "approve",
     outputs: [{ internalType: "bool", name: "", type: "bool" }],
     payable: false,
     stateMutability: "nonpayable",
-    type: "function",
+    type: "function"
   },
   {
     constant: true,
@@ -148,7 +149,7 @@ export const BUSDT_CONTRACT_ABI = [
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     payable: false,
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     constant: false,
@@ -157,7 +158,7 @@ export const BUSDT_CONTRACT_ABI = [
     outputs: [{ internalType: "bool", name: "", type: "bool" }],
     payable: false,
     stateMutability: "nonpayable",
-    type: "function",
+    type: "function"
   },
   {
     constant: true,
@@ -166,19 +167,19 @@ export const BUSDT_CONTRACT_ABI = [
     outputs: [{ internalType: "uint8", name: "", type: "uint8" }],
     payable: false,
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     constant: false,
     inputs: [
       { internalType: "address", name: "spender", type: "address" },
-      { internalType: "uint256", name: "subtractedValue", type: "uint256" },
+      { internalType: "uint256", name: "subtractedValue", type: "uint256" }
     ],
     name: "decreaseAllowance",
     outputs: [{ internalType: "bool", name: "", type: "bool" }],
     payable: false,
     stateMutability: "nonpayable",
-    type: "function",
+    type: "function"
   },
   {
     constant: true,
@@ -187,19 +188,19 @@ export const BUSDT_CONTRACT_ABI = [
     outputs: [{ internalType: "address", name: "", type: "address" }],
     payable: false,
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     constant: false,
     inputs: [
       { internalType: "address", name: "spender", type: "address" },
-      { internalType: "uint256", name: "addedValue", type: "uint256" },
+      { internalType: "uint256", name: "addedValue", type: "uint256" }
     ],
     name: "increaseAllowance",
     outputs: [{ internalType: "bool", name: "", type: "bool" }],
     payable: false,
     stateMutability: "nonpayable",
-    type: "function",
+    type: "function"
   },
   {
     constant: false,
@@ -208,7 +209,7 @@ export const BUSDT_CONTRACT_ABI = [
     outputs: [{ internalType: "bool", name: "", type: "bool" }],
     payable: false,
     stateMutability: "nonpayable",
-    type: "function",
+    type: "function"
   },
   {
     constant: true,
@@ -217,7 +218,7 @@ export const BUSDT_CONTRACT_ABI = [
     outputs: [{ internalType: "string", name: "", type: "string" }],
     payable: false,
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     constant: true,
@@ -226,7 +227,7 @@ export const BUSDT_CONTRACT_ABI = [
     outputs: [{ internalType: "address", name: "", type: "address" }],
     payable: false,
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     constant: false,
@@ -235,7 +236,7 @@ export const BUSDT_CONTRACT_ABI = [
     outputs: [],
     payable: false,
     stateMutability: "nonpayable",
-    type: "function",
+    type: "function"
   },
   {
     constant: true,
@@ -244,7 +245,7 @@ export const BUSDT_CONTRACT_ABI = [
     outputs: [{ internalType: "string", name: "", type: "string" }],
     payable: false,
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     constant: true,
@@ -253,32 +254,32 @@ export const BUSDT_CONTRACT_ABI = [
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     payable: false,
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     constant: false,
     inputs: [
       { internalType: "address", name: "recipient", type: "address" },
-      { internalType: "uint256", name: "amount", type: "uint256" },
+      { internalType: "uint256", name: "amount", type: "uint256" }
     ],
     name: "transfer",
     outputs: [{ internalType: "bool", name: "", type: "bool" }],
     payable: false,
     stateMutability: "nonpayable",
-    type: "function",
+    type: "function"
   },
   {
     constant: false,
     inputs: [
       { internalType: "address", name: "sender", type: "address" },
       { internalType: "address", name: "recipient", type: "address" },
-      { internalType: "uint256", name: "amount", type: "uint256" },
+      { internalType: "uint256", name: "amount", type: "uint256" }
     ],
     name: "transferFrom",
     outputs: [{ internalType: "bool", name: "", type: "bool" }],
     payable: false,
     stateMutability: "nonpayable",
-    type: "function",
+    type: "function"
   },
   {
     constant: false,
@@ -287,6 +288,8 @@ export const BUSDT_CONTRACT_ABI = [
     outputs: [],
     payable: false,
     stateMutability: "nonpayable",
-    type: "function",
-  },
+    type: "function"
+  }
 ];
+
+export const TOKEN_CLAIM_APPROVED = true;

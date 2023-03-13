@@ -2,19 +2,21 @@ import React from "react";
 import { Button, Progress } from "@material-tailwind/react";
 import { useAccount, useDisconnect, useSwitchNetwork, useNetwork } from "wagmi";
 import { Icon } from "@iconify/react";
-import SectionTitleSash1 from "../../../components/SectionTitleSash1";
-import { CHAIN_ID, CURRENCY_GWIZ_TO_BUSDT } from "../../../utils/constants";
-import { ITokenAmountInfo } from "../../../utils/interfaces";
 import { useWeb3Modal } from "@web3modal/react";
+import SectionTitleSash1 from "../../../components/SectionTitleSash1";
+import { CHAIN_ID, CURRENCY_GWIZ_TO_BUSDT, TOKEN_CLAIM_APPROVED } from "../../../utils/constants";
+import { IClaimableTokenInfo, ITokenAmountInfo } from "../../../utils/interfaces";
 
 /* ----------------------------------------------------------- */
 
 interface IProps {
   handleDialogBnbOpened: Function;
   handleDialogBusdtOpened: Function;
+  handleDialogTokenClaimOpened: Function;
   balanceInUsd: number;
   tokenAmountInfo: ITokenAmountInfo;
   tokenClaimStopped: boolean;
+  claimableTokenInfo: IClaimableTokenInfo
 }
 
 /* ----------------------------------------------------------- */
@@ -22,9 +24,11 @@ interface IProps {
 export default function TokenSale({
   handleDialogBnbOpened,
   handleDialogBusdtOpened,
+  handleDialogTokenClaimOpened,
   balanceInUsd,
   tokenAmountInfo,
-  tokenClaimStopped
+  tokenClaimStopped,
+  claimableTokenInfo
 }: IProps) {
   const { open } = useWeb3Modal()
   const { isConnected } = useAccount()
@@ -45,33 +49,43 @@ export default function TokenSale({
         {/* <div className="border-white border-2 rounded-xl py-2 px-6 text-white">
           <p>First CEX Launch Will Go Live On Friday 31st March 2023</p>
         </div> */}
-        <div className="flex flex-col gap-2 text-white">
-          <p className="text-center">1 GWIZ = {CURRENCY_GWIZ_TO_BUSDT} BUSDT</p>
-          <p className="text-center">BUSDT Raised ${balanceInUsd.toFixed(2)}</p>
-        </div>
+        {!TOKEN_CLAIM_APPROVED && (
+          <>
+            <div className="flex flex-col gap-2 text-white">
+              <p className="text-center">1 GWIZ = {CURRENCY_GWIZ_TO_BUSDT} BUSDT</p>
+              <p className="text-center">BUSDT Raised ${balanceInUsd.toFixed(4)}</p>
+            </div>
 
-        {/* Progress bar */}
-        <Progress
-          value={tokenAmountInfo.claimedTokenAmount / tokenAmountInfo.totalTokenAmount * 100}
-          className="h-3 rounded-lg"
-          barProps={{
-            className: 'bg-secondary h-3 rounded-lg'
-          }}
-        />
+            {/* Progress bar */}
+            <Progress
+              value={tokenAmountInfo.claimedTokenAmount / tokenAmountInfo.totalTokenAmount * 100}
+              className="h-3 rounded-lg"
+              barProps={{
+                className: 'bg-secondary h-3 rounded-lg'
+              }}
+            />
 
-        <div className="flex flex-col gap-2 text-white">
-          <p className="text-center">
-            {tokenAmountInfo.totalTokenAmount - tokenAmountInfo.claimedTokenAmount} Tokens Remaining Until<br />
-            1 GWIZ = {CURRENCY_GWIZ_TO_BUSDT} BUSDT
-          </p>
-        </div>
+            <div className="flex flex-col gap-2 text-white">
+              <p className="text-center">
+                {tokenAmountInfo.totalTokenAmount - tokenAmountInfo.claimedTokenAmount} Tokens Remaining Until<br />
+                1 GWIZ = {CURRENCY_GWIZ_TO_BUSDT} BUSDT
+              </p>
+            </div>
+          </>
+        )}
       </div>
 
       <div className="max-w-4xl mx-auto mt-8">
         <div className="flex flex-col md:flex-row items-center justify-center gap-8">
           {isConnected ? (
             <>
-              {chain?.id === CHAIN_ID ? (
+              {chain?.id === CHAIN_ID ? TOKEN_CLAIM_APPROVED ? (
+                <Button
+                  className="bg-darkPrimary hover:bg-darkPrimary rounded-none text-white text-lg capitalize flex items-center gap-2"
+                  disabled={claimableTokenInfo.claimableTokenAmount <= 0}
+                  onClick={() => handleDialogTokenClaimOpened()}
+                >Claim GWIZ</Button>
+              ) : (
                 <>
                   <Button
                     className="bg-darkPrimary hover:bg-darkPrimary rounded-none text-white text-lg capitalize flex items-center gap-2"
@@ -113,10 +127,9 @@ export default function TokenSale({
             <>
               <Button
                 className="bg-secondary hover:bg-secondary rounded-none text-white text-lg capitalize"
-                disabled={tokenClaimStopped}
                 onClick={() => open()}
               >
-                Buy Now
+                Connect Wallet
               </Button>
               {/* <Web3Button label="Connect Wallet" avatar="show" balance="show" icon="show" /> */}
               <Button className="bg-darkPrimary hover:bg-darkPrimary rounded-none text-white text-lg capitalize">
