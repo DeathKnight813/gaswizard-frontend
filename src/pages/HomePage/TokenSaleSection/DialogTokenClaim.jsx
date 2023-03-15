@@ -68,7 +68,7 @@ export default function DialogTokenClaim({ open, handler, sizeOfDialog, claimabl
         <div className="flex flex-col gap-4">
           {/* Selling */}
           <div className="flex flex-col gap-1">
-            <label htmlFor="amount">Selling</label>
+            <label htmlFor="amount">Total Claimable: {claimableTokenInfo.claimableTokenAmount} GWIZ</label>
             <CustomInput
               id="amount"
               className="border border-gray-500"
@@ -90,7 +90,7 @@ export default function DialogTokenClaim({ open, handler, sizeOfDialog, claimabl
           variant="text"
           className="rounded-none text-primary text-md capitalize border border-primary"
           disabled={claimableTokenInfo.claimableTokenAmount === Number(amount)}
-          onClick={() => setAmount(claimableTokenInfo.claimableTokenAmount - Number(amount))}
+          onClick={() => setAmount(claimableTokenInfo.claimableTokenAmount)}
         >
           Max
         </Button>
