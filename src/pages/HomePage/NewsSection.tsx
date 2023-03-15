@@ -30,7 +30,6 @@ export default function NewsSection() {
           <SectionTitleSash1 />
         </div>
         <Swiper
-
           breakpoints={{
             320: {
               slidesPerView: 1,

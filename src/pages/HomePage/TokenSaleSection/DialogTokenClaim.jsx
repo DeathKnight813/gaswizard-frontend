@@ -85,11 +85,18 @@ export default function DialogTokenClaim({ open, handler, sizeOfDialog, claimabl
           </div>
         </div>
       </DialogBody>
-      <DialogFooter>
+      <DialogFooter className="gap-2">
         <Button
           variant="text"
+          className="rounded-none text-primary text-md capitalize border border-primary"
+          disabled={claimableTokenInfo.claimableTokenAmount === Number(amount)}
+          onClick={() => setAmount(claimableTokenInfo.claimableTokenAmount - Number(amount))}
+        >
+          Max
+        </Button>
+        <Button
           className="bg-primary hover:bg-primary rounded-none text-white text-md capitalize"
-          disabled={claimableTokenInfo.claimableTokenAmount - Number(amount) < 0}
+          disabled={claimableTokenInfo.claimableTokenAmount - Number(amount) < 0 || Number(amount) === 0}
           onClick={handleClaim}
         >
           Claim
