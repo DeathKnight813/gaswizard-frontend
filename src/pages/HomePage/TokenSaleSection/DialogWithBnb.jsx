@@ -62,11 +62,9 @@ export default function DialogWithBnb({ open, handler, sizeOfDialog, remainedTok
       });
     }
   });
-
   const handlePurchase = () => {
     sendTransaction?.();
   };
-
   /* ----------------------------------------------------------------------------- */
 
   //  Input sell amount
